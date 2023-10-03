@@ -1,7 +1,15 @@
 import { InferSchemaType, model, Schema } from "mongoose";
 
+export enum MoodOptions {
+    'awesome' = 'awesome',
+    'happy' = 'happy',
+    'meh' = 'meh',
+    'depressed' = 'depressed',
+    'angry' = 'angry'
+  }
+
 const journalSchema = new Schema({
-    mood: { type: String, enum: ['awesome', 'happy', 'meh', 'depressed', 'angry'], required: true },
+    mood: { type: String, enum: Object.values(MoodOptions), required: true },
     journalEntry: { type: String },
     date: { type: Date, default: Date.now }
 });

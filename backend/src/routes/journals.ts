@@ -9,4 +9,9 @@ router.get("/:journalId", JournalsController.getJournal);
 
 router.post("/", JournalsController.createJournal);
 
+//patch is used whenever you want to update resource
+router.patch("/:journalId", JournalsController.updateJournal);
+
+router.delete("/:journalId", JournalsController.deleteJournal);
+
 export default router;
