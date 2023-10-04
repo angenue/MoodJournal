@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
 import { Button } from 'react-bootstrap';
-import { Journal } from './models/journal';
+import { Journal as JournalModel} from './models/journal';
+import Journal from './components/Journal';
 
 function App() {
-const [journals, setJournals] = useState<Journal[]>([]);
+const [journals, setJournals] = useState<JournalModel[]>([]);
 
 useEffect(() => {
   async function loadJournals() {
@@ -22,8 +22,10 @@ useEffect(() => {
 }, []);
 
   return (
-    <div className="App">
-      {JSON.stringify(journals)}
+    <div>
+      {journals.map(journal => (
+        <Journal journal={journal} key={journal._id}/>
+      ))}
     </div>
   );
 }
