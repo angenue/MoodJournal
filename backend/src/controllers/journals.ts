@@ -42,14 +42,12 @@ export const getJournal: RequestHandler = async (req, res, next) => {
       interface CreateJournalBody {
         mood?: string,
         journalEntry?: string,
-        date: Date
-      }
+        }
 
     export const createJournal: RequestHandler<unknown, unknown, CreateJournalBody, unknown> = async(req, res, next) => {
         const mood = req.body.mood;
         const journalEntry = req.body.journalEntry;
-        const date = req.body.date;
-
+        
         try {
           if (!mood) {
             throw createHttpError(400, "Mood is required");
@@ -57,8 +55,7 @@ export const getJournal: RequestHandler = async (req, res, next) => {
 
             const newJournal = await JournalModel.create({
                 mood: mood,
-                journalEntry: journalEntry,
-                date: date,
+                journalEntry: journalEntry
             });
 
             res.status(201).json(newJournal);
