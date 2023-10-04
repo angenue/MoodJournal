@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Button } from 'react-bootstrap';
+import { Journal } from './models/journal';
 
 function App() {
-const [clickCount, setClickCount] = useState(0);
+const [journals, setJournals] = useState<Journal[]>([]);
+
+useEffect(() => {
+  async function loadJournals() {
+    try {
+      const response = await fetch("/api/journals", { method: "GET"});
+      const journals = await response.json();
+      setJournals(journals);
+    } catch (error) {
+      console.error(error);
+      alert(error);
+    }
+  }
+  loadJournals();
+}, []);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          whats upppppp
-        </p>
-        <Button onClick={() => setClickCount(clickCount + 1)}>
-          Clicked {clickCount} times
-        </Button>
-      </header>
+      {JSON.stringify(journals)}
     </div>
   );
 }
