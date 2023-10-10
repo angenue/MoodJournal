@@ -5,16 +5,13 @@
     margin: 0;
   }
 
-  
-
   .todays-date {
     color: rgba(61, 64, 91, 1);
     font-size: 30px;
     text-align: center;
-
 }
 
-  .emoji {
+  .emojis {
     backface-visibility: hidden;
     padding: 12px;
     text-align: center;
@@ -25,15 +22,15 @@
 	bottom: 40px;
   }
   @media (max-width: 1023px) {
-    .emoji {
+    .emojis {
       margin: 30px -16px -16px -16px; } }
 
   @media (max-width: 600px) {
-    .emoji {
+    .emojis {
       margin: 30px -8px -12px -8px;
       border-radius: 8px; } }
 
-  .emoji .emoji-reaction-prompt {
+  .emojis .emoji-reaction-prompt {
     padding-top: 9px;
       padding-bottom: 9px;
       text-align: center;
@@ -71,7 +68,21 @@
   }
   
   .editor-container {
-    margin-top: 20px;
+    margin: 0 auto;
+    max-width: 700px;
+    padding: 0 var(1.5em);
+  }
+
+  .custom-editor .DraftEditor-root {
+    background: #efefef8f; 
+	font-size: 1em;
+	line-height: 1.5em;
+
+	padding: 1em 2em;
+  	height: 310px;
+
+	border: 1px solid #E07A5F;
+	box-shadow: 2px 2px 0px hsla( 0, 0%, 0%, 0.1 );
   }
   
   .word-limit {

@@ -52,21 +52,22 @@ const HomePage = () => {
 >
   😡
 </button>
-
-      </div>
+</div>
       
       <div className="editor-container">
+      <div className="custom-editor">
         <Editor
           editorState={editorState}
           onChange={handleEditorChange}
           placeholder="Write your journal entry..."
         />
+        </div>
         <div className="word-limit">
           {`${editorState.getCurrentContent().getPlainText().split(/\s/).length} words / 500 limit`}
         </div>
       </div>
 
-      {selectedMood && <div>You selected: {selectedMood}</div>}
+      {/*selectedMood && <div>You selected: {selectedMood}</div>*/} 
     </div>
   );
 };
