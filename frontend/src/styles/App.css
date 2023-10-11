@@ -1,0 +1,7 @@
+
+  .content {
+    flex-grow: 1;
+    /* This makes the content area fill the available space */
+    /* Add other styles as needed */
+  }
+  

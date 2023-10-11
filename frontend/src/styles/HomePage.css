@@ -1,13 +1,28 @@
 .home-page {
-    background-color: rgba(244, 241, 222, 1);
+    background-color: #EFEFEF;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow-x: hidden;
     margin: 0;
+    background-size: cover;
+    height: 100vh;
+  }
+
+  .title {
+    color: #5e747f;
+    font-size: 30px;
+    text-align: start;
+    font-weight: bold;
+    position: relative;
+    background-color: #FFFFFF;
+    height: 60px;
+    padding-left: 30px;
+    padding-top: 10px;
   }
 
   .todays-date {
-    color: rgba(61, 64, 91, 1);
-    font-size: 30px;
+    padding-top: 20px;
+    color: #7b9e87;
+    font-size: 70px;
     text-align: center;
 }
 
@@ -21,6 +36,7 @@
 	position: relative;
 	bottom: 40px;
   }
+
   @media (max-width: 1023px) {
     .emojis {
       margin: 30px -16px -16px -16px; } }
@@ -30,10 +46,10 @@
       margin: 30px -8px -12px -8px;
       border-radius: 8px; } }
 
-  .emojis .emoji-reaction-prompt {
-    padding-top: 9px;
+  .emoji-reaction-prompt {
       padding-bottom: 9px;
       text-align: center;
+      color: #b6be9c;
   }
   
   .emojis .emoji-reaction {
@@ -41,12 +57,11 @@
       background: none;
       color: inherit;
       border: none;
-      padding: 0;
+      padding-bottom: 20px;
       font: inherit;
       cursor: pointer;
       outline: none;
       width: 50px;
-      height: 100%;
       display: inline-block;
       text-align: center;
       font-size: 35px;
@@ -74,18 +89,45 @@
   }
 
   .custom-editor .DraftEditor-root {
-    background: #efefef8f; 
+    background: #FFFFFF; 
 	font-size: 1em;
 	line-height: 1.5em;
 
 	padding: 1em 2em;
   	height: 310px;
 
-	border: 1px solid #E07A5F;
+	border-radius: 20px;
 	box-shadow: 2px 2px 0px hsla( 0, 0%, 0%, 0.1 );
+  }
+
+  .DraftEditor-root .public-DraftEditorPlaceholder-root {
+    color: #0F0F0F; 
+  }
+
+  .editor-addons {
+    display: flex;
+	flex-direction: row;
+	align-items: center;
   }
   
   .word-limit {
-    font-size: 12px;
+    font-size: 15px;
+    color: #0F0F0F;
+  }
+
+  .submit-button {
+	background-color: #d2d0ba;
+    padding: 10px 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #5e747f;
+    border: none;
+    outline: none;
+    margin: 5px;
+    font-weight: normal;
+  }
+
+  .submit-button:hover {
+    background-color: #E3E1D3;
   }
   
