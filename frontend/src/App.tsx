@@ -7,17 +7,20 @@ import './styles/App.css';
 const App = () => {
   return (
     <div style={{ display: 'flex' }}>
+      <Router>
       <Sidebar/>
 
       <div className="content">
-        <Router>
+        
           <Routes>
             <Route path="/" element={<HomePage />} />
             {/* Add more routes as needed */}
           </Routes>
+          </div>
         </Router>
+        
       </div>
-    </div>
+    
   );
 };
 

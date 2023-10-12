@@ -1,6 +1,16 @@
 .sidebar {
-  width: 200px; /* Adjust the width as needed */
+  width: 200px; 
   background-color: #e5c1bd;
+  }
+
+  .logo {
+    text-align: center;
+    padding: 10px;
+    padding-top: 30px;
+  }
+  
+  .logo img {
+    max-width: 100%; 
   }
   
   .sidebar ul {
@@ -11,6 +21,13 @@
   .sidebar li {
     padding: 10px 20px;
     cursor: pointer;
+    
+  }
+
+  .Link {
+    text-decoration: none;
+    color: #2a383f;
+    font-size: 20px;
   }
   
   .sidebar li:hover {
