@@ -1,0 +1,48 @@
+/* JournalEntryPopup.css */
+
+.journal-entry-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .journal-entry-popup {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .back-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+  }
+  
+  .back-arrow svg {
+    width: 1.5em; /* Adjust the size as needed */
+    height: 1.5em; /* Adjust the size as needed */
+    vertical-align: middle;
+  }
+  
+  .top-bar {
+    display: flex;
+    align-items: center;
+  }
+
+  .selected-date {
+    padding-top: 20px;
+    color: #7b9e87;
+    font-size: 70px;
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  
