@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from './components/Sidebar';
 import TopNav from './components/TopNav';
 import HomePage from './components/HomePage';
-import CalendarPage from './components/CalendarPage';
+import YearlyCalendar from './components/calendar/YearlyCalendar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 
@@ -16,7 +16,7 @@ const App = () => {
       <TopNav/>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/Calendar" element={<CalendarPage />} />
+            <Route path="/Calendar" element={<YearlyCalendar year={2023} />} />
             {/* Add more routes as needed */}
           </Routes>
           </div>
