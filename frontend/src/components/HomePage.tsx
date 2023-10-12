@@ -33,7 +33,6 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-      <h1 className="title">MOODY</h1>
 
       <h1 className="todays-date">{new Date().toDateString()}</h1>
 

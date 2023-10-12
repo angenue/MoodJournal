@@ -15,7 +15,9 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
+        <Link to="/Calendar" className="Link">
         <i className="fa-regular fa-calendar-days" style={{ marginRight: '25px' }}></i>Calendar
+        </Link>
         </li>
         <li>
         <i className="fa-solid fa-chart-line" style={{ marginRight: '25px' }}></i>Graph
