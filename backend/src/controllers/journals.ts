@@ -44,26 +44,28 @@ export const getJournal: RequestHandler = async (req, res, next) => {
         journalEntry?: string,
         }
 
-    export const createJournal: RequestHandler<unknown, unknown, CreateJournalBody, unknown> = async(req, res, next) => {
-        const mood = req.body.mood;
-        const journalEntry = req.body.journalEntry;
+        export const createJournal: RequestHandler<unknown, unknown, CreateJournalBody & { selectedDate: Date }, unknown> = async (req, res, next) => {
+          const mood = req.body.mood;
+          const journalEntry = req.body.journalEntry;
+          const selectedDate = req.body.selectedDate; // Extract selectedDate from the request body
         
-        try {
-          if (!mood) {
-            throw createHttpError(400, "Mood is required");
-          }
-
+          try {
+            if (!mood) {
+              throw createHttpError(400, "Mood is required");
+            }
+        
             const newJournal = await JournalModel.create({
-                mood: mood,
-                journalEntry: journalEntry
+              mood: mood as MoodOptions,
+              journalEntry: journalEntry,
+              date: selectedDate, // Save selectedDate in the database
             });
-
+        
             res.status(201).json(newJournal);
-        }
-        catch(error) {
+          } catch (error) {
             next(error);
           }
-    };
+        };
+        
 
     interface UpdateJournalParams {
       journalId: string,

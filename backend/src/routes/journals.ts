@@ -14,4 +14,6 @@ router.patch("/:journalId", JournalsController.updateJournal);
 
 router.delete("/:journalId", JournalsController.deleteJournal);
 
+//router.post("/submitForm", JournalsController.submitJournal);
+
 export default router;

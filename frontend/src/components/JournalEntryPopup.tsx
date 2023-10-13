@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Editor, EditorState } from 'draft-js';
+import {journalInput} from "../utils/handleSave";
 import "../styles/JournalPopup.css";
 
 interface JournalEntryPopupProps {
@@ -10,20 +10,19 @@ interface JournalEntryPopupProps {
 
 const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel, selectedDate }) => {
   const [mood, setMood] = useState<string>('');
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+  const [journalEntry, setJournalEntry] = useState<string>('');
   const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
 
-  const handleEditorChange = (newEditorState: EditorState) => {
-    const wordCount = newEditorState.getCurrentContent().getPlainText().split(/\s/).length;
-    setEditorState(newEditorState);
+  const handleJournalInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputText = event.target.value;
+    setJournalEntry(inputText);
+    const wordCount = inputText.split(/\s/).length;
     setWordLimitExceeded(wordCount > 500);
   };
 
-  const handleSave = () => {
-    const contentState = editorState.getCurrentContent();
-    const journalEntry = contentState.getPlainText();
-    onSave(selectedDate, mood, journalEntry);
-  };
+  /*const handleSave = () => {
+    handleSubmit({ mood, journalEntry, selectedDate });
+  };*/
 
   const handleCancel = () => {
     onCancel();
@@ -89,19 +88,32 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel,
         </button>
       </div>
 
-      <div className="custom-editor">
-          <Editor
-            editorState={editorState}
-            onChange={handleEditorChange}
-            placeholder="Write your journal entry..."
-          />
-        </div>
+      <form className="editor-container" /*onSubmit={handleSave}*/>
+        <textarea
+        className="custom-editor"
+          value={journalEntry}
+          onChange={handleJournalInputChange}
+          placeholder="Write your journal entry..."
+        />
+
+
         <div className="editor-addons">
-      <div className="word-limit">
-          {`${editorState.getCurrentContent().getPlainText().split(/\s/).length} words / 500 limit`}
+          <div className="word-limit">
+            {`${journalEntry.split(/\s/).length} words / 500 limit`}
+          </div>
+
+          <button
+            className="submit-button"
+            //onClick={handleSave}
+            disabled={wordLimitExceeded}
+            type="submit"
+          >
+            Save
+          </button>
         </div>
-      <button className="submit-button" onClick={handleSave} disabled={wordLimitExceeded}>Save</button>
-      </div>
+      </form>
+
+      
       </div>
     </div>
   );
