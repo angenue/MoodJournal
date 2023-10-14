@@ -16,8 +16,6 @@ const HomePage = () => {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
   const { register, handleSubmit, getValues, formState: {errors, isSubmitting }} = useForm<journalInput>();
-  //const { register, handleSubmit } = useForm();
-  //const { errors } = useFormState();
 
   const handleSelectEmoji = (mood: string) => {
     setSelectedMood(mood);
