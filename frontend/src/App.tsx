@@ -7,10 +7,12 @@ import {Journal as JournalModel } from './models/journal';
 import Journal from "./components/Journal";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
+import { Col, Container, Row } from "react-bootstrap";
+import styles from "./styles/CalendarPage.module.css";
 
 const App = () => {
 
-  /*const [journals, setJournals] = useState<JournalModel[]>([]);
+  const [journals, setJournals] = useState<JournalModel[]>([]);
 
     useEffect(() => {
         async function loadJournals() {
@@ -25,7 +27,7 @@ const App = () => {
         }
 
         loadJournals();
-    }, []); */
+    }, []); 
 
   return (
     <div style={{ display: 'flex' }}>
@@ -33,13 +35,25 @@ const App = () => {
       <Sidebar/>
       <div className="content">
       <TopNav/>
-      {/*journals.map(journal => (
-        <Journal journal={journal} key={journal._id}/>
-      ))*/}
-          <Routes>
+
+
+      <Container>
+        <Row xs={1} md={2} xl={3} className="g-4">
+      {journals.map(journal => (
+        <Col  key={journal._id}>
+        <Journal journal={journal} className={styles.journal}/>
+        </Col>
+      ))}
+      </Row>
+      </Container>
+
+
+          {/*<Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/Calendar" element={<YearlyCalendar year={2023} />} />
-          </Routes>
+            <Route path="/Calendar" element={journals.map(journal => (
+        <Journal journal={journal} key={journal._id}/>
+      ))} /> 
+            </Routes> */}
           </div>
         </Router>
         
