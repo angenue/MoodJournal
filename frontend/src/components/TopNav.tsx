@@ -1,9 +1,9 @@
 import React from "react";
-import "../styles/TopNav.css";
+import styles from "../styles/TopNav.module.css";
 
 const TopNav = () => {
     return (
-        <div className="title">
+        <div className={styles.title}>
           <h1>MOODY</h1>
         </div>
       );

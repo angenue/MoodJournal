@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import styles from "../styles/Journal.module.css";
 import { Card } from "react-bootstrap";
-import { Journal, Journal as JournalModel } from "../models/journal";
+import { Journal as JournalModel } from "../models/journal";
 
 interface JournalProps {
     journal: JournalModel,

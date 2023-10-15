@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import {journalInput} from "../utils/handleSave";
 import * as JournalsApi from "../utils/handleSave";
-import "../styles/HomePage.css";
+//import "../styles/HomePage.css";
+import styles from "../styles/JournalEntry.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { mapEmojiToString } from '../utils/mapEmojiToString';
 
@@ -47,37 +48,37 @@ const HomePage = () => {
   return (
     <div className="home-page">
 
-      <h1 className="todays-date">{new Date().toDateString()}</h1>
-      <div className="emojis">
-        <div className="emoji-reaction-prompt">
+      <h1 className={styles["todays-date"]}>{new Date().toDateString()}</h1>
+      <div className={styles.emojis}>
+        <div className={styles["emoji-reaction-prompt"]}>
           What best describes your mood today?
         </div>
         <button
-          className={`emoji-reaction ${selectedMood === "😃" ? "active" : ""}`}
+          className={`${styles["emoji-reaction"]} ${selectedMood === "😃" ? styles["active"] : ""}`}
           onClick={() => handleSelectEmoji("😃")}
         >
           😃
         </button>
         <button
-          className={`emoji-reaction ${selectedMood === "😊" ? "active" : ""}`}
+          className={`${styles["emoji-reaction"]} ${selectedMood === "😊" ? styles["active"] : ""}`}
           onClick={() => handleSelectEmoji("😊")}
         >
           😊
         </button>
         <button
-          className={`emoji-reaction ${selectedMood === "😐" ? "active" : ""}`}
+          className={`${styles["emoji-reaction"]} ${selectedMood === "😐" ? styles["active"] : ""}`}
           onClick={() => handleSelectEmoji("😐")}
         >
           😐
         </button>
         <button
-          className={`emoji-reaction ${selectedMood === "😢" ? "active" : ""}`}
+          className={`${styles["emoji-reaction"]} ${selectedMood === "😢" ? styles["active"] : ""}`}
           onClick={() => handleSelectEmoji("😢")}
         >
           😢
         </button>
         <button
-          className={`emoji-reaction ${selectedMood === "😡" ? "active" : ""}`}
+          className={`${styles["emoji-reaction"]} ${selectedMood === "😡" ? styles["active"] : ""}`}
           onClick={() => handleSelectEmoji("😡")}
         >
           😡
@@ -85,29 +86,33 @@ const HomePage = () => {
       </div>
 
       
-      <form  className="editor-container" onSubmit={handleSubmit(onSubmit)}>
-        <textarea
-        className="custom-editor"
-          placeholder="Write your journal entry..."
-          rows={10}
-          {...register("journalEntry", { required: "Required" })}
-          onChange={checkWordCount}
-        />
+      <form className={styles["editor-container"]} onSubmit={handleSubmit(onSubmit)}>
+  <textarea
+    className={styles["custom-editor"]}
+    placeholder="Write your journal entry..."
+    rows={10}
+    {...register("journalEntry", { required: "Required" })}
+    onChange={checkWordCount}
+  />
 
-<input type="hidden" value={selectedMood || ''} {...register("mood")} />
+  <input
+    type="hidden"
+    value={selectedMood || ''}
+    {...register("mood")}
+  />
 
-        <div className="editor-addons">
-          <div className="word-limit">
-          {`${getValues("journalEntry")?.split(/\s/).length ?? 0} words / 500 limit`}
-</div>
+<div className={styles["editor-addons"]}>
+    <div className={styles["word-limit"]}>
+      {`${getValues("journalEntry")?.split(/\s/).length ?? 0} words / 500 limit`}
+    </div>
 
-          <button
-            className="submit-button"
-            disabled={wordLimitExceeded}
-            type="submit"
-          >
-            Submit Diary
-          </button>
+    <button
+      className={styles["submit-button"]}
+      disabled={wordLimitExceeded}
+      type="submit"
+    >
+      Submit Diary
+    </button>
         </div>
       </form>
 

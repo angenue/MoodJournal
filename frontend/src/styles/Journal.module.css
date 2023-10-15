@@ -1,7 +1,9 @@
-.jounalCard {
-    background-color: aquamarine;
+.journalCard {
+    background-color: #fff;
 }
 
 .cardText {
     white-space: pre-line;
+    color: rgb(133, 87, 123);
+    font-size: 20px;
 }

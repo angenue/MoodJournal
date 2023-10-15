@@ -3,13 +3,14 @@ import Sidebar from './components/Sidebar';
 import TopNav from './components/TopNav';
 import HomePage from './components/HomePage';
 import YearlyCalendar from './components/calendar/YearlyCalendar';
-import Journal from './components/Journal';
+import {Journal as JournalModel } from './models/journal';
+import Journal from "./components/Journal";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 
 const App = () => {
 
-  const [journals, setJournals] = useState<Journal[]>([]);
+  /*const [journals, setJournals] = useState<JournalModel[]>([]);
 
     useEffect(() => {
         async function loadJournals() {
@@ -24,7 +25,7 @@ const App = () => {
         }
 
         loadJournals();
-    }, []);
+    }, []); */
 
   return (
     <div style={{ display: 'flex' }}>
@@ -32,11 +33,12 @@ const App = () => {
       <Sidebar/>
       <div className="content">
       <TopNav/>
-      {JSON.stringify(journals)}
+      {/*journals.map(journal => (
+        <Journal journal={journal} key={journal._id}/>
+      ))*/}
           <Routes>
-           {/* <Route path="/" element={<HomePage />} />
-            <Route path="/Calendar" element={<Journal journal={}/>} />
-             Add more routes as needed */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/Calendar" element={<YearlyCalendar year={2023} />} />
           </Routes>
           </div>
         </Router>
