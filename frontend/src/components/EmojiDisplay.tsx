@@ -6,7 +6,7 @@ interface EmojiProps {
 
 const EmojiDisplay: React.FC<EmojiProps> = ({ onSelectEmoji }) => {
   const emojis = [
-    { emoji: '😄', mood: 'Excited' },
+    { emoji: '😄', mood: 'Awesome' },
     { emoji: '🙂', mood: 'Happy' },
     { emoji: '😐', mood: 'Meh' },
     { emoji: '😢', mood: 'Depressed' },

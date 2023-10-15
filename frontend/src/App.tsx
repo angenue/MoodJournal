@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./styles/CalendarPage.module.css";
+import * as JournalsApi from "./utils/journal_api";
 
 const App = () => {
 
@@ -17,15 +18,13 @@ const App = () => {
     useEffect(() => {
         async function loadJournals() {
             try {
-                const response = await fetch("api/journals", {method: "GET"});
-                const journals = await response.json();
+                const journals = await JournalsApi.fetchJournals();
                 setJournals(journals);
             } catch (error) {
                 console.error(error);
                 alert(error);
             }
         }
-
         loadJournals();
     }, []); 
 

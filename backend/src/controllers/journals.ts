@@ -7,6 +7,7 @@ import {MoodOptions} from '../models/journal';
 
 export const  getJournals: RequestHandler = async (req, res, next) => {
     try {
+      throw createHttpError(401);
       const journals = await JournalModel.find().exec();
       res.status(200).json(journals);
     } catch(error) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {journalInput} from "../utils/handleSave";
+import {journalInput} from "../utils/journal_api";
 import popupStyles from "../styles/JournalPopup.module.css";
 import styles from "../styles/JournalEntry.module.css";
 

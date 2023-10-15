@@ -2,7 +2,7 @@ export const mapEmojiToString = (emoji: string | null) => {
     if (!emoji) return "";
     switch (emoji) {
       case "😃":
-        return "excited";
+        return "awesome";
       case "😊":
         return "happy";
         case "😐":

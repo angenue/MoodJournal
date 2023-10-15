@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import {journalInput} from "../utils/handleSave";
-import * as JournalsApi from "../utils/handleSave";
+import {journalInput} from "../utils/journal_api";
+import * as JournalsApi from "../utils/journal_api";
 //import "../styles/HomePage.css";
 import styles from "../styles/JournalEntry.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -114,14 +114,14 @@ const HomePage = () => {
     className={styles["custom-editor"]}
     placeholder="Write your journal entry..."
     rows={10}
-    {...register("journalEntry", { required: "Required" })}
+    {...register("journalEntry")}
     onChange={checkWordCount}
   />
 
   <input
     type="hidden"
     value={selectedMood || ''}
-    {...register("mood")}
+    {...register("mood", { required: "Required" })}
   />
 
 <div className={styles["editor-addons"]}>
