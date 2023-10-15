@@ -37,7 +37,7 @@ const App = () => {
       <TopNav/>
 
 
-      <Container>
+      {/*<Container>
         <Row xs={1} md={2} xl={3} className="g-4">
       {journals.map(journal => (
         <Col  key={journal._id}>
@@ -45,15 +45,23 @@ const App = () => {
         </Col>
       ))}
       </Row>
-      </Container>
+      </Container> */}
 
 
-          {/*<Routes>
+          <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/Calendar" element={journals.map(journal => (
-        <Journal journal={journal} key={journal._id}/>
-      ))} /> 
-            </Routes> */}
+
+            <Route path="/Calendar" element={<Container>
+        <Row xs={1} md={2} xl={3} className="g-4">
+      {journals.map(journal => (
+        <Col  key={journal._id}>
+        <Journal journal={journal} className={styles.journal}/>
+        </Col>
+      ))}
+      </Row>
+      </Container>} /> 
+
+            </Routes> 
           </div>
         </Router>
         

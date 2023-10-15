@@ -5,6 +5,8 @@ import * as JournalsApi from "../utils/handleSave";
 import styles from "../styles/JournalEntry.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { mapEmojiToString } from '../utils/mapEmojiToString';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface FormData {
@@ -14,6 +16,7 @@ interface FormData {
 }
 
 const HomePage = () => {
+
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
   const { register, handleSubmit, getValues, formState: {errors, isSubmitting }} = useForm<journalInput>();
@@ -28,7 +31,28 @@ const HomePage = () => {
       formData.mood = mapEmojiToString(selectedMood); // Set the mood from selectedMood
       const journalResponse = await JournalsApi.createJournal(formData);
       console.log("Journal Response:", journalResponse); // Check the console for this log
+
+      // Show a success toast
+    toast("💗 Diary Submitted", {
+      position: "top-center",
+      autoClose: 3000, // Automatically close after 3 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+      
     } catch (error) {
+      toast.error("Unable To Submit Diary", {
+        position: "top-center",
+        autoClose: 3000, // Automatically close after 3 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
       console.error(error);
       alert(error);
     }
@@ -42,11 +66,10 @@ const HomePage = () => {
     }
   };
   
-  
-
 
   return (
     <div className="home-page">
+      <ToastContainer />
 
       <h1 className={styles["todays-date"]}>{new Date().toDateString()}</h1>
       <div className={styles.emojis}>
