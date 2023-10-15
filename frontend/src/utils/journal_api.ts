@@ -34,4 +34,8 @@ export interface journalInput {
         });
     return response.json();
 }
+
+export async function deleteJournal(journalId: string) {
+  await fetchData("/api/journals/" + journalId, { method: "DELETE"});
+}
   

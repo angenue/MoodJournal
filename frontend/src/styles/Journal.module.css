@@ -11,3 +11,14 @@
     white-space: pre-line;
     color: rgb(133, 87, 123);
 }
+
+.flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+}
+
+.cardTitle {
+    justify-content: space-between;
+  }
