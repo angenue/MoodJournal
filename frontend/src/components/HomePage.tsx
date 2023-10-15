@@ -121,7 +121,7 @@ const HomePage = () => {
   <input
     type="hidden"
     value={selectedMood || ''}
-    {...register("mood", { required: "Required" })}
+    {...register("mood")}
   />
 
 <div className={styles["editor-addons"]}>
@@ -131,15 +131,13 @@ const HomePage = () => {
 
     <button
       className={styles["submit-button"]}
-      disabled={wordLimitExceeded}
+      disabled={wordLimitExceeded || isSubmitting}
       type="submit"
     >
       Submit Diary
     </button>
         </div>
       </form>
-
-      {/*selectedMood && <div>You selected: {selectedMood}</div>*/}
     </div>
   );
 };

@@ -14,8 +14,4 @@ router.patch("/:journalId", JournalsController.updateJournal);
 
 router.delete("/:journalId", JournalsController.deleteJournal);
 
-router.get('/date/:date', JournalsController.getJournalsByDate);
-
-//router.post("/submitForm", JournalsController.submitJournal);
-
 export default router;

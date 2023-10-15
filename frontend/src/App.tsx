@@ -10,62 +10,25 @@ import './styles/App.css';
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./styles/CalendarPage.module.css";
 import * as JournalsApi from "./utils/journal_api";
+import JournalPopup from "./components/JournalPopup";
 
 const App = () => {
 
-  const [journals, setJournals] = useState<JournalModel[]>([]);
-
-    useEffect(() => {
-        async function loadJournals() {
-            try {
-                const journals = await JournalsApi.fetchJournals();
-                setJournals(journals);
-            } catch (error) {
-                console.error(error);
-                alert(error);
-            }
-        }
-        loadJournals();
-    }, []); 
 
   return (
     <div style={{ display: 'flex' }}>
       <Router>
-      <Sidebar/>
-      <div className="content">
-      <TopNav/>
-
-
-      {/*<Container>
-        <Row xs={1} md={2} xl={3} className="g-4">
-      {journals.map(journal => (
-        <Col  key={journal._id}>
-        <Journal journal={journal} className={styles.journal}/>
-        </Col>
-      ))}
-      </Row>
-      </Container> */}
-
+        <Sidebar />
+        <div className="content">
+          <TopNav />
 
           <Routes>
             <Route path="/" element={<HomePage />} />
-
-            <Route path="/Calendar" element={<Container>
-        <Row xs={1} md={2} xl={3} className="g-4">
-      {journals.map(journal => (
-        <Col  key={journal._id}>
-        <Journal journal={journal} className={styles.journal}/>
-        </Col>
-      ))}
-      </Row>
-      </Container>} /> 
-
-            </Routes> 
-          </div>
-        </Router>
-        
-      </div>
-    
+            <Route path="/Calendar" element={<Journal className={styles.journal}/>} /> 
+          </Routes>
+        </div>
+      </Router>
+    </div>
   );
 };
 
