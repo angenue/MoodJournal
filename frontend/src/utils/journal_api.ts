@@ -35,6 +35,18 @@ export interface journalInput {
     return response.json();
 }
 
+export async function updateJournal(journalId: string, journal: journalInput): Promise<Journal> {
+  const response = await fetchData("/api/journals/" + journalId,
+  {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+  },
+  body: JSON.stringify(journal),
+  });
+  return response.json();
+}
+
 export async function deleteJournal(journalId: string) {
   await fetchData("/api/journals/" + journalId, { method: "DELETE"});
 }

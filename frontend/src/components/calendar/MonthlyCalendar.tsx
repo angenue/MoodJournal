@@ -44,14 +44,6 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
 
         onClickDay={handleDateClick}
       />
-
-{isPopupOpen && (
-        <JournalEntryPopup
-          onSave={handlePopupSave}
-          onCancel={handlePopupCancel}
-          selectedDate={selectedDate as Date}
-        />
-      )}
     </div>
   );
 };

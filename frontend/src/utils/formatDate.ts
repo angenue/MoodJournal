@@ -7,3 +7,18 @@ export function formatDate(inputDate: Date): string {
 
         return formattedDate.replace(/\d{1,2}(st|nd|rd|th)/, day + daySuffix);
 }
+
+export function formatDateToDefault(formattedDate: string) {
+    // Split the formatted date into parts
+    const parts = formattedDate.split(' ');
+  
+    // Extract month, day, and year
+    const month = parts[0];
+    const day = parseInt(parts[1].slice(0, -1)); // Remove the comma and convert to number
+    const year = parseInt(parts[2]);
+  
+    // Create a Date object
+    const date = new Date(`${month} ${day}, ${year}`);
+  
+    return date;
+  }

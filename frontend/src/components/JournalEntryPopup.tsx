@@ -1,19 +1,52 @@
 import React, { useState } from 'react';
+import { useForm, SubmitHandler } from "react-hook-form";
 import {journalInput} from "../utils/journal_api";
 import popupStyles from "../styles/JournalPopup.module.css";
 import styles from "../styles/JournalEntry.module.css";
+import {Journal } from '../models/journal';
+import { mapEmojiToString } from '../utils/mapEmojiToString';
+import { mapStringToEmoji } from '../utils/mapStringToEmoji';
+import { errorMessage, successMessage } from "../utils/toastMessage";
+import { ToastContainer } from 'react-toastify';
+import * as JournalsApi from "../utils/journal_api";
+import { formatDate , formatDateToDefault} from "../utils/formatDate";
 
 
 interface JournalEntryPopupProps {
-  onSave: (date: Date, mood: string, journalEntry: string) => void;
+  journalToEdit: Journal,
+  onSave: (journal: Journal) => void;
   onCancel: () => void;
-  selectedDate: Date;
 }
 
-const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel, selectedDate }) => {
-  const [selectedMood, setSelectedMood] = useState<string>('');
+const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ journalToEdit, onSave, onCancel }) => {
   const [journalEntry, setJournalEntry] = useState<string>('');
   const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
+  const [selectedMood, setSelectedMood] = useState<string>(mapStringToEmoji(journalToEdit.mood) || '');
+
+  const { register, handleSubmit, formState: { errors, isSubmitting } , setValue} = useForm<journalInput>({
+    defaultValues: {
+      mood: journalToEdit.mood || "",
+        journalEntry: journalToEdit.journalEntry || "",
+        selectedDate: journalToEdit.date || "",
+    }
+});
+
+async function onSubmit(input: journalInput) {
+  console.log("Form Data:", input); // Check the console for this log
+  try {
+    input.mood = mapEmojiToString(input.mood);
+    let journalResponse: Journal;
+    journalResponse = await JournalsApi.updateJournal(journalToEdit._id, input)
+    onSave(journalResponse);
+    // Show a success toast
+  successMessage("💗 Diary Updated");
+    
+  } catch (error) {
+    errorMessage("Unable To Update Diary")
+    console.error(error);
+    alert(error);
+  }
+}
 
   const handleJournalInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputText = event.target.value;
@@ -24,11 +57,8 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel,
 
   const handleSelectEmoji = (mood: string) => {
     setSelectedMood(mood);
+    setValue("mood", mood); 
   };
-
-  /*const handleSave = () => {
-    handleSubmit({ mood, journalEntry, selectedDate });
-  };*/
 
   const handleCancel = () => {
     onCancel();
@@ -36,6 +66,8 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel,
 
   return (
     <div className={popupStyles["journal-entry-popup-overlay"]}>
+      <ToastContainer />
+
     <div className={popupStyles["journal-entry-popup"]}>
     
           <button className={popupStyles["back-arrow"]} onClick={handleCancel}>
@@ -55,8 +87,9 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel,
               />
             </svg>
           </button>
-          <h1 className={popupStyles["selected-date"]}>{selectedDate.toDateString()}</h1>
-        
+          
+          <h1 className={popupStyles["selected-date"]}>{formatDate(journalToEdit.date)}</h1>
+      
 
           <div className={styles.emojis}>
         <div className={styles["emoji-reaction-prompt"]}>
@@ -94,14 +127,17 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel,
         </button>
       </div>
 
-      <form className={styles["editor-container"]} /*onSubmit={handleSave}*/>
+      <form className={styles["editor-container"]} onSubmit={handleSubmit(onSubmit)}>
         <textarea
         className={styles["custom-editor"]}
-          value={journalEntry}
-          onChange={handleJournalInputChange}
           placeholder="Write your journal entry..."
+          {...register("journalEntry")}
         />
-
+         <input
+    type="hidden"
+    value={selectedMood || ''}
+    {...register("mood")}
+  />
 
         <div className={styles["editor-addons"]}>
           <div className={styles["word-limit"]}>
@@ -110,8 +146,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({ onSave, onCancel,
 
           <button
             className={styles["submit-button"]}
-            //onClick={handleSave}
-            disabled={wordLimitExceeded}
+            disabled={wordLimitExceeded || isSubmitting}
             type="submit"
           >
             Save

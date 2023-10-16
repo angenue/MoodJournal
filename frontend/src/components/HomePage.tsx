@@ -5,8 +5,9 @@ import * as JournalsApi from "../utils/journal_api";
 import styles from "../styles/JournalEntry.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { mapEmojiToString } from '../utils/mapEmojiToString';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { errorMessage, successMessage } from "../utils/toastMessage";
 
 
 interface FormData {
@@ -33,26 +34,10 @@ const HomePage = () => {
       console.log("Journal Response:", journalResponse); // Check the console for this log
 
       // Show a success toast
-    toast("💗 Diary Submitted", {
-      position: "top-center",
-      autoClose: 3000, // Automatically close after 3 seconds
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined
-    });
+    successMessage("💗 Diary Submitted");
       
     } catch (error) {
-      toast.error("Unable To Submit Diary", {
-        position: "top-center",
-        autoClose: 3000, // Automatically close after 3 seconds
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      });
+      errorMessage("Unable To Submit Diary")
       console.error(error);
       alert(error);
     }

@@ -7,13 +7,20 @@ import { formatDate } from "../utils/formatDate";
 import { Col, Container, Row } from "react-bootstrap";
 import * as JournalsApi from "../utils/journal_api";
 import {MdDelete} from"react-icons/md";
+import { errorMessage, successMessage } from "../utils/toastMessage";
+import { ToastContainer } from 'react-toastify';
+import JournalEntryPopup from './JournalEntryPopup';
 
 interface JournalProps {
-    className?: string;
+    className?: string,
+    //onJournalClicked: (journal: JournalModel) => void,
   }
   
   const Journal: React.FC<JournalProps> = ({ className }) => {
     const [journals, setJournals] = useState<JournalModel[]>([]);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(null);
+
   
     useEffect(() => {
       async function loadJournals() {
@@ -27,14 +34,45 @@ interface JournalProps {
       }
       loadJournals();
     }, []); 
+
+    async function deleteJournal(journal:JournalModel) {
+      try {
+        await JournalsApi.deleteJournal(journal._id);
+        setJournals(journals.filter(existingJournal => existingJournal._id !== journal._id));
+        successMessage("💗 Diary Deleted");
+      } catch (error) {
+        errorMessage("Delete Diary")
+        console.error(error);
+        alert(error);
+      }
+    }
+
+    const handlePopupSave = (journal:JournalModel) => {
+      // Handle saving the journal entry to the database with the selected date, mood, and journal entry
+      console.log(journal);
+      setIsPopupOpen(false);
+    };
+
+    async function onJournalClicked(journal:JournalModel) {
+      try {
+        setSelectedJournal(journal);
+        setIsPopupOpen(true);
+      } catch (error) {
+        errorMessage("Could Not Open Journal")
+        console.error(error);
+        alert(error);
+      }
+    }
   
     return (
       <Container>
+        <ToastContainer />
         <Row xs={1} md={2} xl={3} className="g-4">
           {journals.map((journal) => (
             <Col key={journal._id}>
 
-              <Card className={`${styles.journalCard} ${className}`}>
+              <Card className={`${styles.journalCard} ${className}`} 
+              onClick={() => onJournalClicked(journal)}>
                 <Card.Body className={styles.cardBody}>
 
                   <Card.Title className={styles.flexCenter}>
@@ -44,7 +82,12 @@ interface JournalProps {
 
                     {formatDate(journal.date) }
                     
-                    <MdDelete />
+                    <MdDelete 
+                    onClick={(e) => {
+                      deleteJournal(journal);
+                      e.stopPropagation();
+                    }}
+                    />
                   </Card.Title>
 
                   <Card.Text className={styles.cardText}>
@@ -56,8 +99,21 @@ interface JournalProps {
             </Col>
           ))}
         </Row>
+
+        {selectedJournal && (
+  <JournalEntryPopup
+    journalToEdit={selectedJournal}
+    onCancel={() => setSelectedJournal(null)}
+    onSave={(updatedJournal) => {
+      setJournals(journals.map(existingJournal => existingJournal._id === updatedJournal._id ? updatedJournal : existingJournal));
+      setSelectedJournal(null);
+    }}
+  />
+)}
+
+			
       </Container>
     );
-  };
+  }
 
 export default Journal;
