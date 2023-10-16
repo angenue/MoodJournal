@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import styles from "../styles/Journal.module.css";
 import { Card } from "react-bootstrap";
 import { Journal as JournalModel } from "../models/journal";
-import { mapStringToEmoji } from "../utils/mapStringToEmoji";
+import { mapStringToEmoji } from "../utils/mapEmojiAndString";
 import { formatDate } from "../utils/formatDate";
 import { Col, Container, Row } from "react-bootstrap";
 import * as JournalsApi from "../utils/journal_api";

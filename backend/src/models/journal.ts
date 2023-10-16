@@ -1,10 +1,10 @@
 import { InferSchemaType, model, Schema } from "mongoose";
 
 export enum MoodOptions {
-    'awesome' = 'awesome',
     'happy' = 'happy',
-    'meh' = 'meh',
-    'depressed' = 'depressed',
+    'content' = 'content',
+    'neutral' = 'neutral',
+    'sad' = 'sad',
     'angry' = 'angry'
   }
 

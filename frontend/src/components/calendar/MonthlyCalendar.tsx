@@ -5,8 +5,7 @@ import "../../styles/MonthlyCalendar.css";
 import JournalEntryPopup from "../JournalEntryPopup";
 import { Journal as JournalModel } from "../../models/journal";
 import * as JournalsApi from "../../utils/journal_api";
-import { ToastContainer } from "react-toastify";
-import { errorMessage, successMessage } from "../../utils/toastMessage";
+import { getMoodColor } from "../../utils/moodColors";
 
 interface MonthlyCalendarProps {
   year: number;
@@ -18,6 +17,30 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
   const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(
     null
   );
+  const [moodData, setMoodData] = useState<Map<string, string>>(new Map());
+
+  useEffect(() => {
+    const fetchMoodData = async () => {
+      try {
+        const allJournals = await JournalsApi.fetchJournals();
+        const newMoodData = new Map();
+
+        allJournals.forEach((journal) => {
+          const journalDate = new Date(journal.date);
+          const formattedDate = journalDate.toISOString().split('T')[0];
+          newMoodData.set(formattedDate, journal.mood);
+        });
+
+        setMoodData(newMoodData);
+      } catch (error) {
+        console.error(error);
+        alert(error);
+      }
+    };
+
+    fetchMoodData();
+  }, []);
+  
 
 
   const handleDateClick = async (date: Date) => {
@@ -53,25 +76,31 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
     setSelectedDate(null);
     setIsPopupOpen(false);
   };
+
+  function tileClassName({ date }: {date:any}) {
+    const formattedDate = date.toISOString().split('T')[0];
+    const moodForDate = moodData.get(formattedDate) || '';
+    return `react-calendar__tile--mood-${moodForDate.toLowerCase()}`;
+  }
   
 
   return (
     <div className="monthly-calendar">
-      <ToastContainer />
-      <Calendar
-        value={selectedDate}
-        view="month"
-        formatShortWeekday={(locale, date) =>
-          new Intl.DateTimeFormat(locale, { weekday: "short" })
-            .format(date)
-            .charAt(0)
-        }
-        tileClassName={({ date }) => {
-          return date.getDate() === 1 ? "start-of-month" : "";
-        }}
-        onClickDay={handleDateClick}
-      />
+      
+<Calendar
 
+  value={selectedDate}
+  view="month"
+  tileClassName={tileClassName}
+  formatShortWeekday={(locale, date) =>
+    new Intl.DateTimeFormat(locale, { weekday: "short" })
+      .format(date)
+      .charAt(0)
+  }
+  
+
+  onClickDay={handleDateClick}
+/>
 
       {isPopupOpen && (
         <JournalEntryPopup

@@ -14,6 +14,4 @@ router.patch("/:journalId", JournalsController.updateJournal);
 
 router.delete("/:journalId", JournalsController.deleteJournal);
 
-router.get('/:date', JournalsController.getJournalsByDate);
-
 export default router;

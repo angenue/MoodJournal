@@ -4,7 +4,7 @@ import * as JournalsApi from "../utils/journal_api";
 //import "../styles/HomePage.css";
 import styles from "../styles/JournalEntry.module.css";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { mapEmojiToString } from '../utils/mapEmojiToString';
+import { mapEmojiToString } from '../utils/mapEmojiAndString';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { errorMessage, successMessage } from "../utils/toastMessage";
