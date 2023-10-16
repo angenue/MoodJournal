@@ -100,7 +100,7 @@ interface JournalProps {
           ))}
         </Row>
 
-        {selectedJournal && (
+       {/* {selectedJournal && (
   <JournalEntryPopup
     journalToEdit={selectedJournal}
     onCancel={() => setSelectedJournal(null)}
@@ -110,6 +110,8 @@ interface JournalProps {
     }}
   />
 )}
+
+  */}
 
 			
       </Container>

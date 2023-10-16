@@ -39,6 +39,25 @@ export const getJournal: RequestHandler = async (req, res, next) => {
       }
       };
 
+      export const getJournalsByDate: RequestHandler<{ date: string }, unknown, unknown, unknown> = async (req, res, next) => {
+        const dateString = req.params.date;
+        const date = new Date(dateString);
+    
+        if (isNaN(date.getTime())) {
+            return next(createHttpError(400, "Invalid date format"));
+        }
+    
+        try {
+            const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+    
+            const journals = await JournalModel.find({ date: { $gte: startOfDay, $lt: endOfDay } }).exec();
+            res.status(200).json(journals);
+        } catch (error) {
+            next(error);
+        }
+    };
+
       interface CreateJournalBody {
         mood?: string,
         journalEntry?: string,

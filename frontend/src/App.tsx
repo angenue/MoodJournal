@@ -10,7 +10,6 @@ import './styles/App.css';
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./styles/CalendarPage.module.css";
 import * as JournalsApi from "./utils/journal_api";
-import JournalPopup from "./components/JournalPopup";
 
 const App = () => {
 
@@ -24,7 +23,7 @@ const App = () => {
 
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/Calendar" element={<Journal className={styles.journal}/>} /> 
+            <Route path="/Calendar" element={<YearlyCalendar year={2023}/>} /> 
           </Routes>
         </div>
       </Router>
