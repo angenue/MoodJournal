@@ -9,10 +9,13 @@ import { errorMessage, successMessage } from "../utils/toastMessage";
 import { ToastContainer } from "react-toastify";
 import * as JournalsApi from "../utils/journal_api";
 import { Journal as JournalModel } from "../models/journal";
+import Modal from 'react-modal';
+import CustomModal from "../utils/deleteConfirmation";
 
 interface JournalEntryPopupProps {
   journalToEdit?: Journal;
   onSave: (journal: Journal) => void;
+  onDelete: (journal: Journal) => void;
   onCancel: () => void;
   selectedDate: Date;
 }
@@ -21,10 +24,12 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
   journalToEdit,
   onSave,
   onCancel,
+  onDelete,
   selectedDate,
 }) => {
   console.log("heyyyy");
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [journalEntry, setJournalEntry] = useState<string>(journalToEdit?.journalEntry || "");
   const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
   const [selectedMood, setSelectedMood] = useState<string>(
@@ -83,20 +88,22 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
     try {
       if (journalToEdit) {
         await JournalsApi.deleteJournal(journalToEdit._id);
-        successMessage("💗 Diary Deleted");
-        handleCancel();
+        onDelete(journalToEdit);
       } else {
         errorMessage("Unable to delete diary: Journal does not exist");
       }
     } catch (error) {
-      errorMessage("Delete Diary")
       console.error(error);
       alert(error);
     }
+  
+  };
+
+  const handleDelete = () => {
+    setIsDeleteModalOpen(true);
   };
   
   
-
   const handleSelectEmoji = (mood: string) => {
     setSelectedMood(mood);
     setValue("mood", mood);
@@ -108,9 +115,16 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
 
   return (
     <div className={popupStyles["journal-entry-popup-overlay"]}>
-      <ToastContainer />
+     
 
       <div className={popupStyles["journal-entry-popup"]}>
+
+      <CustomModal
+          isOpen={isDeleteModalOpen}
+          onRequestClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={deleteJournal}
+        />
+
         <div className={popupStyles["options"]}>
         <button className={popupStyles["back-arrow"]} onClick={handleCancel}>
           <svg
@@ -131,7 +145,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
         </button>
 
         {journalToEdit && (
-          <button className={popupStyles["delete-button"]} onClick={() => deleteJournal()} >
+          <button className={popupStyles["delete-button"]} onClick={handleDelete} >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               x="0px"

@@ -5,6 +5,8 @@ import "../../styles/MonthlyCalendar.css";
 import JournalEntryPopup from "../JournalEntryPopup";
 import { Journal as JournalModel } from "../../models/journal";
 import * as JournalsApi from "../../utils/journal_api";
+import { errorMessage, successMessage } from "../../utils/toastMessage";
+import { ToastContainer } from "react-toastify";
 
 interface MonthlyCalendarProps {
   year: number;
@@ -13,13 +15,11 @@ interface MonthlyCalendarProps {
 const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     new Date(year, month, 1)  // Initialize with the first day of the specified month and year
-  );
+);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(
-    null
-  );
+  const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(null);
   const [moodData, setMoodData] = useState<Map<string, string>>(new Map());
-  const [moodDataUpdated, setMoodDataUpdated] = useState(false);
+
   useEffect(() => {
     const fetchMoodData = async () => {
       try {
@@ -89,6 +89,21 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
     setIsPopupOpen(false);
     await updateMoodData();
   };
+
+  const handlePopupDelete = async (deletedJournal: JournalModel) => {
+    try {
+      successMessage("💗 Diary Deleted");
+      // Format the date to match the key in moodData
+      // Close the popup
+      setIsPopupOpen(false);
+      await updateMoodData();
+    } catch (error) {
+      errorMessage("Delete Diary");
+      console.error(error);
+      alert(error);
+    }
+  };
+  
   
   const closePopup = () => {
     setSelectedDate(null);
@@ -106,7 +121,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
 
   return (
     <div className="monthly-calendar">
-      
+      <ToastContainer/>
 <Calendar
   value={selectedDate}
   view="month"
@@ -117,6 +132,10 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
       .charAt(0)
   }
   onClickDay={handleDateClick}
+  tileDisabled={({ date }) => {
+    // Disable tiles for days in other months
+    return date.getMonth() !== month;
+  }}
 />
 
       {isPopupOpen && (
@@ -128,6 +147,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
           }}
           selectedDate={selectedDate as Date}
           onSave={handlePopupSave}
+          onDelete={handlePopupDelete}
         />
       )}
     </div>
