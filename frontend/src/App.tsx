@@ -7,8 +7,6 @@ import {Journal as JournalModel } from './models/journal';
 import Journal from "./components/Journal";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
-import { Col, Container, Row } from "react-bootstrap";
-import styles from "./styles/CalendarPage.module.css";
 import * as JournalsApi from "./utils/journal_api";
 
 const App = () => {

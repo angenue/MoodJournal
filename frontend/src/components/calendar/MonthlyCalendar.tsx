@@ -12,7 +12,9 @@ interface MonthlyCalendarProps {
   month: number;
 }
 const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    new Date(year, month, 1)  // Initialize with the first day of the specified month and year
+  );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(
     null
@@ -80,7 +82,13 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
   function tileClassName({ date }: {date:any}) {
     const formattedDate = date.toISOString().split('T')[0];
     const moodForDate = moodData.get(formattedDate) || '';
-    return `react-calendar__tile--mood-${moodForDate.toLowerCase()}`;
+    const moodClassName = `react-calendar__tile--mood-${moodForDate.toLowerCase()}`;
+    
+    // Add your custom logic here
+    const startOfMonthClassName = date.getDate() === 1 ? 'start-of-month' : '';
+
+    // Combine the class names
+    return `${moodClassName} ${startOfMonthClassName}`;
   }
   
 
@@ -88,17 +96,14 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
     <div className="monthly-calendar">
       
 <Calendar
-
   value={selectedDate}
   view="month"
-  tileClassName={tileClassName}
+  tileClassName={(tileClassName)}
   formatShortWeekday={(locale, date) =>
     new Intl.DateTimeFormat(locale, { weekday: "short" })
       .format(date)
       .charAt(0)
   }
-  
-
   onClickDay={handleDateClick}
 />
 
