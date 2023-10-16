@@ -3,6 +3,8 @@
 .react-calendar__navigation__arrow {
     display: none;
   }
+
+  
   
   .calendar-container {
     /* Adjust the width and height as needed */
@@ -142,6 +144,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
   }
   .react-calendar__navigation button {
     min-width: 44px;
@@ -149,7 +152,7 @@
   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
-    background-color: #e6e6e6;
+    background-color: #D2D0BA;
   }
   .react-calendar__navigation button[disabled] {
     background-color: #f0f0f0;
