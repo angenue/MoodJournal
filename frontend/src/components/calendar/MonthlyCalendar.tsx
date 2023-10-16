@@ -5,7 +5,6 @@ import "../../styles/MonthlyCalendar.css";
 import JournalEntryPopup from "../JournalEntryPopup";
 import { Journal as JournalModel } from "../../models/journal";
 import * as JournalsApi from "../../utils/journal_api";
-import { getMoodColor } from "../../utils/moodColors";
 
 interface MonthlyCalendarProps {
   year: number;
@@ -20,7 +19,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
     null
   );
   const [moodData, setMoodData] = useState<Map<string, string>>(new Map());
-
+  const [moodDataUpdated, setMoodDataUpdated] = useState(false);
   useEffect(() => {
     const fetchMoodData = async () => {
       try {
@@ -42,8 +41,24 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
 
     fetchMoodData();
   }, []);
-  
 
+  const updateMoodData = async () => {
+    try {
+      const allJournals = await JournalsApi.fetchJournals();
+      const newMoodData = new Map();
+
+      allJournals.forEach((journal) => {
+        const journalDate = new Date(journal.date);
+        const formattedDate = journalDate.toISOString().split('T')[0];
+        newMoodData.set(formattedDate, journal.mood);
+      });
+
+      setMoodData(newMoodData);
+    } catch (error) {
+      console.error(error);
+      alert(error);
+    }
+  };
 
   const handleDateClick = async (date: Date) => {
     setSelectedDate(date);
@@ -68,10 +83,11 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
     }
   };
 
-  const handlePopupSave = (journal: JournalModel) => {
+  const handlePopupSave = async (journal: JournalModel) => {
     // Handle saving the journal entry to the database with the selected date, mood, and journal entry
     console.log(journal);
     setIsPopupOpen(false);
+    await updateMoodData();
   };
   
   const closePopup = () => {
@@ -79,16 +95,12 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
     setIsPopupOpen(false);
   };
 
-  function tileClassName({ date }: {date:any}) {
+  function tileClassName({ date }: { date: any }) {
     const formattedDate = date.toISOString().split('T')[0];
     const moodForDate = moodData.get(formattedDate) || '';
     const moodClassName = `react-calendar__tile--mood-${moodForDate.toLowerCase()}`;
-    
-    // Add your custom logic here
-    const startOfMonthClassName = date.getDate() === 1 ? 'start-of-month' : '';
 
-    // Combine the class names
-    return `${moodClassName} ${startOfMonthClassName}`;
+    return moodClassName;
   }
   
 
