@@ -34,7 +34,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
         );
       });
 
-      setSelectedJournal(filteredJournals[0] || null); // Set selected journal or null if none found
+      setSelectedJournal(filteredJournals[0]|| null); // Set selected journal or null if none found
       setIsPopupOpen(true); // Open the popup regardless of whether a journal was found
       console.log("Is Popup Open?", isPopupOpen);
     } catch (error) {
@@ -50,6 +50,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
   };
   
   const closePopup = () => {
+    setSelectedDate(null);
     setIsPopupOpen(false);
   };
   
@@ -71,10 +72,14 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
         onClickDay={handleDateClick}
       />
 
-      {selectedJournal && (
+
+      {isPopupOpen && (
         <JournalEntryPopup
-          journalToEdit={selectedJournal}
-          onCancel={() => setSelectedJournal(null)}
+          journalToEdit={selectedJournal || undefined}
+          onCancel={() => {
+            closePopup();
+            setSelectedJournal(null);
+          }}
           selectedDate={selectedDate as Date}
           onSave={handlePopupSave}
         />

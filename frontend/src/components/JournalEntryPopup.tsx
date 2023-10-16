@@ -24,9 +24,9 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
   onCancel,
   selectedDate,
 }) => {
-  const [journalEntry, setJournalEntry] = useState<string>(
-    journalToEdit?.journalEntry || ""
-  );
+  console.log("heyyyy");
+
+  const [journalEntry, setJournalEntry] = useState<string>(journalToEdit?.journalEntry || "");
   const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
   const [selectedMood, setSelectedMood] = useState<string>(
     mapStringToEmoji(journalToEdit?.mood || "") || ""
@@ -44,6 +44,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
       selectedDate: selectedDate || "", // Set the selected date here
     },
   });
+  
 
   async function onSubmit(input: journalInput) {
     console.log("Form Data:", input);
@@ -159,6 +160,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
             😡
           </button>
         </div>
+        
 
         <form
           className={styles["editor-container"]}
