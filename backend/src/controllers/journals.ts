@@ -39,6 +39,24 @@ export const getJournal: RequestHandler = async (req, res, next) => {
       }
       };
 
+      export const getJournalsByYear: RequestHandler<{ year: number }> = async (req, res, next) => {
+        const year = req.params.year; // Access the year parameter from the request
+      
+        // Use the 'year' value to filter journals by year and return the result
+        try {
+          const journals = await JournalModel.find({
+            date: {
+              $gte: new Date(`${year}-01-01`),
+              $lt: new Date(`${Number(year) + 1}-01-01`)
+            }
+          }).exec();
+      
+          res.status(200).json(journals);
+        } catch (error) {
+          next(error);
+        }
+      };
+
 
       interface CreateJournalBody {
         mood?: string,

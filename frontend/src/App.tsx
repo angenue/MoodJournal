@@ -21,7 +21,7 @@ const App = () => {
 
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/Calendar" element={<YearlyCalendar year={2023}/>} /> 
+            <Route path="/Calendar" element={<YearlyCalendar/>} /> 
           </Routes>
         </div>
       </Router>

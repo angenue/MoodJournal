@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get("/", JournalsController.getJournals);
 
+router.get("/:year", JournalsController.getJournalsByYear);
+
 router.get("/:journalId", JournalsController.getJournal);
 
 router.post("/", JournalsController.createJournal);

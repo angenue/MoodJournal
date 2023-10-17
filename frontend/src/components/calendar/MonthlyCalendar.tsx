@@ -11,8 +11,9 @@ import { ToastContainer } from "react-toastify";
 interface MonthlyCalendarProps {
   year: number;
   month: number;
+  fetchMoodData: (year: number) => Promise<Map<string, string>>;
 }
-const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
+const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, fetchMoodData }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     new Date(year, month, 1)  // Initialize with the first day of the specified month and year
 );
@@ -20,45 +21,23 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
   const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(null);
   const [moodData, setMoodData] = useState<Map<string, string>>(new Map());
 
-  useEffect(() => {
-    const fetchMoodData = async () => {
-      try {
-        const allJournals = await JournalsApi.fetchJournals();
-        const newMoodData = new Map();
-
-        allJournals.forEach((journal) => {
-          const journalDate = new Date(journal.date);
-          const formattedDate = journalDate.toISOString().split('T')[0];
-          newMoodData.set(formattedDate, journal.mood);
-        });
-
-        setMoodData(newMoodData);
-      } catch (error) {
-        console.error(error);
-        alert(error);
-      }
-    };
-
-    fetchMoodData();
-  }, []);
-
-  const updateMoodData = async () => {
+  const updateMoodData = async (year: number) => {
     try {
-      const allJournals = await JournalsApi.fetchJournals();
-      const newMoodData = new Map();
-
-      allJournals.forEach((journal) => {
-        const journalDate = new Date(journal.date);
-        const formattedDate = journalDate.toISOString().split('T')[0];
-        newMoodData.set(formattedDate, journal.mood);
-      });
-
+      const newMoodData = await fetchMoodData(year);
       setMoodData(newMoodData);
     } catch (error) {
       console.error(error);
       alert(error);
     }
   };
+  
+
+  useEffect(() => {
+    updateMoodData(year)
+    setSelectedDate(new Date(year, month, 1));
+  }, [year, month]);
+  
+  
 
   const handleDateClick = async (date: Date) => {
     setSelectedDate(date);
@@ -87,16 +66,14 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month }) => {
     // Handle saving the journal entry to the database with the selected date, mood, and journal entry
     console.log(journal);
     setIsPopupOpen(false);
-    await updateMoodData();
+    await updateMoodData(year);
   };
 
   const handlePopupDelete = async (deletedJournal: JournalModel) => {
     try {
       successMessage("💗 Diary Deleted");
-      // Format the date to match the key in moodData
-      // Close the popup
       setIsPopupOpen(false);
-      await updateMoodData();
+      await updateMoodData(year);
     } catch (error) {
       errorMessage("Delete Diary");
       console.error(error);
