@@ -11,31 +11,27 @@ import { ToastContainer } from "react-toastify";
 interface MonthlyCalendarProps {
   year: number;
   month: number;
-  fetchMoodData: (year: number) => Promise<Map<string, string>>;
+  moodData: Map<string, string>;
+  updateMoodData: (year: number) => Promise<void>;
 }
-const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, fetchMoodData }) => {
+const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, moodData, updateMoodData }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     new Date(year, month, 1)  // Initialize with the first day of the specified month and year
 );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(null);
-  const [moodData, setMoodData] = useState<Map<string, string>>(new Map());
-
-  const updateMoodData = async (year: number) => {
-    try {
-      const newMoodData = await fetchMoodData(year);
-      setMoodData(newMoodData);
-    } catch (error) {
-      console.error(error);
-      alert(error);
-    }
-  };
-  
 
   useEffect(() => {
-    updateMoodData(year)
-    setSelectedDate(new Date(year, month, 1));
-  }, [year, month]);
+    const currentDate = selectedDate || new Date(); // Use selectedDate if it exists, otherwise use the current date
+    const currentDateYear = currentDate.getFullYear();
+    const currentDateMonth = currentDate.getMonth();
+  
+    if (currentDateYear !== year || currentDateMonth !== month) {
+      setSelectedDate(new Date(year, month, 1));
+    }
+
+    console.log(selectedDate);
+  }, [year, month, selectedDate]);
   
   
 
@@ -55,7 +51,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, fetchMoo
 
       setSelectedJournal(filteredJournals[0]|| null); // Set selected journal or null if none found
       setIsPopupOpen(true); // Open the popup regardless of whether a journal was found
-      console.log("Is Popup Open?", isPopupOpen);
+      console.log("selected date", selectedDate)
     } catch (error) {
       console.error(error);
       alert(error);
@@ -83,7 +79,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, fetchMoo
   
   
   const closePopup = () => {
-    setSelectedDate(null);
+    //setSelectedDate(null);
     setIsPopupOpen(false);
   };
 
@@ -101,6 +97,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, fetchMoo
       <ToastContainer/>
 <Calendar
   value={selectedDate}
+  activeStartDate={new Date(year, month, 1)}
   view="month"
   tileClassName={(tileClassName)}
   formatShortWeekday={(locale, date) =>

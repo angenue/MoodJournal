@@ -14,17 +14,22 @@ const YearlyCalendar: React.FC = () => {
 
   const fetchMoodDataForYear = async (year: number): Promise<Map<string, string>> => {
     try {
-      
-      const allJournals = await JournalsApi.fetchJournalsByYear(year);
-      const newMoodData = new Map();
+      const moodData = new Map();
   
-      allJournals.forEach((journal) => {
-        const journalDate = new Date(journal.date);
-        const formattedDate = journalDate.toISOString().split('T')[0];
-        newMoodData.set(formattedDate, journal.mood);
-      });
+      try {
+        const response = await JournalsApi.fetchJournalsByYear(year);
+        const journals = response; // Change this line
   
-      return newMoodData;
+        journals.forEach((journal) => {
+          const journalDate = new Date(journal.date);
+          const formattedDate = journalDate.toISOString().split('T')[0];
+          moodData.set(formattedDate, journal.mood);
+        });
+      } catch (error) {
+        console.error(`Error fetching data for year ${year}:`, error);
+      }
+  
+      return moodData;
     } catch (error) {
       console.error(error);
       alert(error);
@@ -33,6 +38,16 @@ const YearlyCalendar: React.FC = () => {
       return new Map<string, string>();
       // or
       // throw new Error("Failed to fetch mood data");
+    }
+  };
+
+  const updateMoodData = async (year: number) => {
+    try {
+      const newMoodData = await fetchMoodDataForYear(year);
+      setMoodData(newMoodData);
+    } catch (error) {
+      console.error(error);
+      alert(error);
     }
   };
   
@@ -70,7 +85,7 @@ const YearlyCalendar: React.FC = () => {
         </div>
         <div className="monthly-calendars">
           {[...Array(12)].map((_, month) => (
-            <MonthlyCalendar key={month} year={selectedDate.getFullYear()} month={month} fetchMoodData={fetchMoodDataForYear}/>
+            <MonthlyCalendar key={month} year={selectedDate.getFullYear()} month={month} moodData={moodData} updateMoodData={updateMoodData}/>
           ))}
         </div>
       
