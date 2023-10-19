@@ -7,6 +7,8 @@ router.get("/", JournalsController.getJournals);
 
 router.get("/:year", JournalsController.getJournalsByYear);
 
+router.get('/:year/:month', JournalsController.getJournalsByYearAndMonth);
+
 router.get("/:journalId", JournalsController.getJournal);
 
 router.post("/", JournalsController.createJournal);

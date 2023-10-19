@@ -57,6 +57,25 @@ export const getJournal: RequestHandler = async (req, res, next) => {
         }
       };
 
+      export const getJournalsByYearAndMonth: RequestHandler<{ year: number, month: number }> = async (req, res, next) => {
+        const year = req.params.year;
+        const month = req.params.month;
+      
+        try {
+          const journals = await JournalModel.find({
+            date: {
+              $gte: new Date(`${year}-${month}-01`),
+              $lt: new Date(`${year}-${Number(month) + 1}-01`)
+            }
+          }).exec();
+      
+          res.status(200).json(journals);
+        } catch (error) {
+          next(error);
+        }
+      };
+      
+
 
       interface CreateJournalBody {
         mood?: string,
