@@ -20,7 +20,9 @@ const Sidebar = () => {
       </Link>
     </li>
     <li>
+    <Link to="/Graph" className={styles.Link}>
       <i className="fa-solid fa-chart-line" style={{ marginRight: '25px' }}></i>Graph
+      </Link>
     </li>
   </ul>
 </div>

@@ -22,6 +22,10 @@ export async function fetchJournalsByYear(year: number): Promise<Journal[]> {
   return await response.json();
 }
 
+export async function fetchJournalsByYearAndMonth(year: number, month: number): Promise<Journal[]> {
+  const response = await fetchData(`api/journals/${year}/${month}`, { method: "GET" });
+  return await response.json();
+}
 
 export interface journalInput {
     mood: string | null,
