@@ -53,18 +53,23 @@ const MonthlyGraph: React.FC<MonthlyGraphProps> = ({ year, month}) => {
   const selectedMonthName = monthNames[month - 1]; // Adjust for 0-based indexing
 
   return (
-    <div className={styles.containter}>
+    <div>
       <h1>{`Monthly Mood Data for ${selectedMonthName}, ${year}`}</h1>
-    <ScatterPlot
-        moodData={moodData}
-        labels={['angry', 'sad', 'neutral', 'content', 'happy']}
-        colors={['#E76F51', '#577590', '#E9C46A', '#F4A261', '#43aa8b']}
-        xAxisLabels={Array.from(new Set(moodData.map(entry => entry.date)))}/>
 
-<BarChart
-moodData={moodData}
+      <div className={`${styles["container"]}`}>
+        <div className={`${styles["graphContainer"]}`}>
+        <ScatterPlot
+          moodData={moodData}
+          labels={["angry", "sad", "neutral", "content", "happy"]}
+          colors={["#E76F51", "#577590", "#E9C46A", "#F4A261", "#43aa8b"]}
+          xAxisLabels={Array.from(new Set(moodData.map((entry) => entry.date)))}
         />
-     </div>  
+        </div>
+<div className={`${styles["graphContainer"]}`}>
+        <BarChart moodData={moodData} />
+        </div>
+      </div>
+    </div>
   );
 };
 

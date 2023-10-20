@@ -45,20 +45,25 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
   }, [year]);
   
     return (
-        <div className={styles.containter}> 
-            <h1>{`Yearly Mood Data for ${year}`}</h1>
-        <ScatterPlot
-        moodData={moodData}
-        labels={['angry', 'sad', 'neutral', 'content', 'happy']}
-        colors={['#E76F51', '#577590', '#E9C46A', '#F4A261', '#43aa8b']}
-        xAxisLabels={Array.from(new Set(moodData.map(entry => entry.date)))}
-      />
-<BarChart
-moodData={moodData}
-        />
+      <div>
+        <h1>{`Yearly Mood Data for ${year}`}</h1>
+        <div className={styles.container}>
+            <div className={`${styles["graphContainer"]}`}>
+          <ScatterPlot
+            moodData={moodData}
+            labels={["angry", "sad", "neutral", "content", "happy"]}
+            colors={["#E76F51", "#577590", "#E9C46A", "#F4A261", "#43aa8b"]}
+            xAxisLabels={Array.from(
+              new Set(moodData.map((entry) => entry.date))
+            )}
+          />
+          </div>
 
+<div className={`${styles["graphContainer"]}`}>
+          <BarChart moodData={moodData} />
+          </div>
+        </div>
       </div>
-      
     );
   };
 

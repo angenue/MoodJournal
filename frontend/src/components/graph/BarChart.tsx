@@ -70,7 +70,7 @@ const options = {
 
   return (
     <div>
-      <Bar className={styles.graphContainer} data={data} options={options} />
+      <Bar data={data} options={options} />
     </div>
   );
 };

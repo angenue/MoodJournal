@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { journalInput } from "../utils/journal_api";
 import popupStyles from "../styles/JournalPopup.module.css";
 import styles from "../styles/JournalEntry.module.css";
 import { Journal } from "../models/journal";
 import { mapEmojiToString, mapStringToEmoji } from "../utils/mapEmojiAndString";
 import { errorMessage, successMessage } from "../utils/toastMessage";
-import { ToastContainer } from "react-toastify";
 import * as JournalsApi from "../utils/journal_api";
-import { Journal as JournalModel } from "../models/journal";
-import Modal from 'react-modal';
 import CustomModal from "../utils/deleteConfirmation";
 
 interface JournalEntryPopupProps {

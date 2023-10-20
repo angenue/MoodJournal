@@ -80,7 +80,7 @@ interface ScatterPlotProps {
 
   return (
     <div>
-      <Scatter className={styles.graphContainer} data={data} options={options as ChartOptions<'scatter'>} />
+      <Scatter data={data} options={options as ChartOptions<'scatter'>} />
     </div>
   );
 };

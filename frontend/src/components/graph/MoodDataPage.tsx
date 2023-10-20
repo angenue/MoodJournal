@@ -10,7 +10,6 @@ const MoodDataPage = () => {
 
   return (
     <div>
-      <h1>Mood Data</h1>
       <div>
         <label>
           Select Year:
