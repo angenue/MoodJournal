@@ -1,6 +1,12 @@
 // MonthlyGraph.tsx
 import React, { useState, useEffect } from 'react';
+import styles from '../../styles/graph.module.css';
 import * as JournalsApi from "../../utils/journal_api";
+import { Chart, registerables } from 'chart.js';
+import { Line, Bar, Scatter } from 'react-chartjs-2';
+import { ChartOptions } from 'chart.js';
+import MoodGraph from './ScatterPlot';
+Chart.register(...registerables);
 
 interface MonthlyGraphProps {
   year: number;
@@ -8,55 +14,49 @@ interface MonthlyGraphProps {
 }
 
 const MonthlyGraph: React.FC<MonthlyGraphProps> = ({ year, month}) => {
-    const [moodData, setMoodData] = useState<Map<string, string>>(new Map());
+  const [moodData, setMoodData] = useState<{ date: string; mood: string }[]>([]);
 
-    const fetchMoodDataForYearAndMonth = async (year: number, month: number): Promise<Map<string, string>> => {
-        try {
-          const moodData = new Map();
-      
-          try {
-            const response = await JournalsApi.fetchJournalsByYearAndMonth(year, month);
-            const journals = response; // Change this line
-      
-            journals.forEach((journal) => {
-              const journalDate = new Date(journal.date);
-              const formattedDate = journalDate.toISOString().split('T')[0];
-              moodData.set(formattedDate, journal.mood);
-            });
-          } catch (error) {
-            console.error(`Error fetching data for year ${year}:`, error);
-          }
-      
-          return moodData;
-        } catch (error) {
-          console.error(error);
-          alert(error);
-      
-          // Return an empty map or throw an error, depending on what you want to do
-          return new Map<string, string>();
-          // or
-          // throw new Error("Failed to fetch mood data");
-        }
-      };
+  useEffect(() => {
+    const fetchMoodDataForYearAndMonth = async (year: number, month: number) => {
+      try {
+        const response = await JournalsApi.fetchJournalsByYearAndMonth(year, month);
+        const journals = response; // Change this line
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-              const newMoodData = await fetchMoodDataForYearAndMonth(year, month);
-              setMoodData(newMoodData);
-            } catch (error) {
-              console.error(error);
-              alert(error);
-            }
-      };
+        const formattedData = journals.map((journal) => {
+          return {
+            date: new Date(journal.date).toISOString().split('T')[0],
+            mood: journal.mood
+          };
+        });
+
+        formattedData.sort((a, b) => a.date.localeCompare(b.date)); // Sort by date
+
+        setMoodData(formattedData);
+      } catch (error) {
+        console.error(`Error fetching data for year ${year}:`, error);
+        alert(error);
+      }
+    };
+
+    fetchMoodDataForYearAndMonth(year, month);
+  }, [year, month]);
+
+
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"
+  ];
   
-      fetchData();
-    }, [year, month]);
+  // Assuming you have selectedYear and selectedMonth as state variables
+  const selectedMonthName = monthNames[month - 1]; // Adjust for 0-based indexing
+
   return (
-    <div>
-      <h2>Monthly Graph for {month}/{year}</h2>
-      {/* Your graph implementation goes here */}
-    </div>
+    <MoodGraph
+        moodData={moodData}
+        labels={['angry', 'sad', 'neutral', 'content', 'happy']}
+        colors={['#E76F51', '#577590', '#E9C46A', '#F4A261', '#43aa8b']}
+        title={`Monthly Mood Data for ${selectedMonthName}, ${year}`}
+        xAxisLabels={Array.from(new Set(moodData.map(entry => entry.date)))}/>
   );
 };
 

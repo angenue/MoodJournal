@@ -1,0 +1,10 @@
+.graphContainer {
+    width: 800px !important;
+    height: 400px !important;
+
+    background: #FFFFFF;
+    box-shadow: 2px 2px 10px hsla(0, 0%, 0%, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+  }
+  

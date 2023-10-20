@@ -32,7 +32,7 @@ const MoodDataPage = () => {
         </label>
       </div>
       <YearlyMoodGraphs year={selectedYear} />
-      {/*<MonthlyMoodGraphs year={selectedYear} month={selectedMonth} />*/}
+      <MonthlyMoodGraphs year={selectedYear} month={selectedMonth} />
     </div>
   );
 };

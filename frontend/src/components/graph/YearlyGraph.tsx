@@ -1,10 +1,14 @@
 // YearlyGraph.tsx
 
 import React, { useState, useEffect } from 'react';
+import styles from '../../styles/graph.module.css';
 import * as JournalsApi from "../../utils/journal_api";
 import { Chart, registerables } from 'chart.js';
 import { Line, Bar, Scatter } from 'react-chartjs-2';
+import { ChartOptions } from 'chart.js';
+import MoodGraph from './ScatterPlot';
 Chart.register(...registerables);
+
 
 
 interface YearlyGraphProps {
@@ -13,7 +17,6 @@ interface YearlyGraphProps {
 
 const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
     const [moodData, setMoodData] = useState<{ date: string; mood: string }[]>([]);
-  const moodNames = ['happy', 'content', 'neutral', 'sad', 'angry'];
 
   useEffect(() => {
     const fetchMoodDataForYear = async (year: number) => {
@@ -40,7 +43,7 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
     fetchMoodDataForYear(year);
   }, [year]);
 
-  const moodLabels = ['happy', 'content', 'neutral', 'sad', 'angry'];
+  const moodLabels = ['angry', 'sad', 'neutral', 'content', 'happy'];
   const moodColors = ['#43aa8b', '#F4A261', '#E9C46A', '#577590', '#E76F51'];
 
   const dataPoints = moodData.map(entry => ({
@@ -50,11 +53,12 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
   }));
   
   const data = {
-    
+    labels: moodData.map(entry => entry.mood),
     datasets: [{
         data: dataPoints,
         showLine: true,
         pointRadius: 5,
+        tension: 0.4,
         fill: false,
         pointBackgroundColor: dataPoints.map(entry => moodColors[moodLabels.indexOf(entry.mood)]),
         pointBorderColor: dataPoints.map(entry => moodColors[moodLabels.indexOf(entry.mood)]),
@@ -65,8 +69,14 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
   const options = {
     scales: {
       x: {
-        type: 'category' as const,
+        type: 'category',
         labels: Array.from(new Set(moodData.map(entry => entry.date))),
+        grid: {
+            color: 'rgba(0, 0, 0, 0)', // Set gridline color to transparent
+          },
+          ticks: {
+            display: false, // Hide x-axis labels
+          },
       },
       y: {
         beginAtZero: true,
@@ -80,15 +90,35 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
         },
       },
     },
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          generateLabels: (chart: any) => {
+            const labels = moodLabels.map((label, index) => {
+              return {
+                text: label,
+                fillStyle: moodColors[index],
+              };
+            });
+            return labels;
+          },
+        },
+        
+      },
+    }, 
   };
-
-
+  
   
     return (
-      <div>
-        <h2>Yearly Mood Data for {year}</h2>
-        <Scatter data={data} options={options} />
-      </div>
+        <MoodGraph
+        moodData={moodData}
+        labels={['angry', 'sad', 'neutral', 'content', 'happy']}
+        colors={['#E76F51', '#577590', '#E9C46A', '#F4A261', '#43aa8b']}
+        title={`Yearly Mood Data for ${year}`}
+        xAxisLabels={Array.from(new Set(moodData.map(entry => entry.date)))}
+      />
+      
     );
   };
 
