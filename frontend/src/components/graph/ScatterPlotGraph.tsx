@@ -6,15 +6,14 @@ import { Chart, registerables } from 'chart.js';
 import { ChartOptions } from 'chart.js';
 Chart.register(...registerables);
 
-interface MoodGraphProps {
+interface ScatterPlotProps {
     moodData: { date: string; mood: string }[];
     labels: string[];
     colors: string[];
-    title: string;
     xAxisLabels: string[];
   }
 
-  const MoodGraph: React.FC<MoodGraphProps> = ({ moodData, labels, colors, title, xAxisLabels }) => {
+  const ScatterPlot: React.FC<ScatterPlotProps> = ({ moodData, labels, colors, xAxisLabels }) => {
   const dataPoints = moodData.map(entry => ({
     x: entry.date,
     y: labels.indexOf(entry.mood),
@@ -77,12 +76,13 @@ interface MoodGraphProps {
       },
   };
 
+  
+
   return (
     <div>
-      <h2>{title}</h2>
       <Scatter className={styles.graphContainer} data={data} options={options as ChartOptions<'scatter'>} />
     </div>
   );
 };
 
-export default MoodGraph;
+export default ScatterPlot;

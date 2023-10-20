@@ -5,7 +5,9 @@ import * as JournalsApi from "../../utils/journal_api";
 import { Chart, registerables } from 'chart.js';
 import { Line, Bar, Scatter } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
-import MoodGraph from './ScatterPlot';
+import ScatterPlot from './ScatterPlotGraph';
+import BarChart from './BarChart';
+import { Container } from 'react-bootstrap';
 Chart.register(...registerables);
 
 interface MonthlyGraphProps {
@@ -51,12 +53,18 @@ const MonthlyGraph: React.FC<MonthlyGraphProps> = ({ year, month}) => {
   const selectedMonthName = monthNames[month - 1]; // Adjust for 0-based indexing
 
   return (
-    <MoodGraph
+    <div className={styles.containter}>
+      <h1>{`Monthly Mood Data for ${selectedMonthName}, ${year}`}</h1>
+    <ScatterPlot
         moodData={moodData}
         labels={['angry', 'sad', 'neutral', 'content', 'happy']}
         colors={['#E76F51', '#577590', '#E9C46A', '#F4A261', '#43aa8b']}
-        title={`Monthly Mood Data for ${selectedMonthName}, ${year}`}
         xAxisLabels={Array.from(new Set(moodData.map(entry => entry.date)))}/>
+
+<BarChart
+moodData={moodData}
+        />
+     </div>  
   );
 };
 
