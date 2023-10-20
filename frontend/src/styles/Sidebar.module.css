@@ -34,4 +34,25 @@
   .sidebar li:hover {
     background-color: #EED7D5;
   }
+
+  .sidebar ul li {
+    padding: 10px 20px; /* Adjust the padding as needed */
+    cursor: pointer;
+    margin-bottom: 10px; /* Add margin between the links */
+  }
   
+  
+
+  @media (max-width: 500px) {
+    .sidebar {
+      width: 60px; /* Adjust width as needed */
+    }
+  
+    .sidebar ul li {
+      text-align: center;
+    }
+  
+    .sidebar ul li span {
+      display: none;
+    }
+  }

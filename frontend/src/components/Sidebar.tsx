@@ -11,17 +11,17 @@ const Sidebar = () => {
   <ul>
     <li>
       <Link to="/" className={styles.Link}>
-        <i className="fas fa-home" style={{ marginRight: '25px' }}></i>Home
+        <i className="fas fa-home" style={{ marginRight: '25px' }}></i><span>Home</span>
       </Link>
     </li>
     <li>
       <Link to="/Calendar" className={styles.Link}>
-        <i className="fa-regular fa-calendar-days" style={{ marginRight: '25px' }}></i>Calendar
+        <i className="fa-regular fa-calendar-days" style={{ marginRight: '25px' }}></i><span>Calendar</span>
       </Link>
     </li>
     <li>
     <Link to="/Graph" className={styles.Link}>
-      <i className="fa-solid fa-chart-line" style={{ marginRight: '25px' }}></i>Graph
+      <i className="fa-solid fa-chart-line" style={{ marginRight: '25px' }}></i><span>Graph</span>
       </Link>
     </li>
   </ul>
