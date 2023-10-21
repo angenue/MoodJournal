@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import YearlyMoodGraphs from './YearlyGraph';
 import MonthlyMoodGraphs from './MonthlyGraph';
+import styles from '../../styles/graph.module.css';
 
 const MoodDataPage = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -30,8 +31,10 @@ const MoodDataPage = () => {
           />
         </label>
       </div>
+      <div className={styles.pageContainer}>
       <YearlyMoodGraphs year={selectedYear} />
       <MonthlyMoodGraphs year={selectedYear} month={selectedMonth} />
+      </div>
     </div>
   );
 };

@@ -208,13 +208,14 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
         </div>
 
         <form
-          className={styles["editor-container"]}
+          className={popupStyles["editor-container-popup"]}
           onSubmit={handleSubmit(onSubmit)}
         >
           <textarea
-            className={styles["custom-editor"]}
+            className={popupStyles["custom-editor-popup"]}
             placeholder="Write your journal entry..."
             {...register("journalEntry")}
+            rows={10}
           />
           <input
             type="hidden"

@@ -1,3 +1,9 @@
+.home-page {
+  overflow-x: hidden;   
+  height: 100vh;
+  padding-bottom: 100px;
+}
+
 .todays-date {
     padding-top: 20px;
     color: #7b9e87;
@@ -16,28 +22,20 @@
 	bottom: 40px;
   }
 
-  @media (max-width: 1023px) {
-    .emojis {
-      margin: 30px -16px -16px -16px; } }
-
-  @media (max-width: 600px) {
-    .emojis {
-      margin: 30px -8px -12px -8px;
-      border-radius: 8px; } }
-
   .emoji-reaction-prompt {
-      padding-bottom: 9px;
-      text-align: center;
-      color: #b6be9c;
-      font-size: 20px;
-  }
+    padding-bottom: 9px;
+    text-align: center;
+    color: #b6be9c;
+    font-size: 20px;
+}
+
+  
   
   .emojis .emoji-reaction {
     filter: grayscale(100%);
       background: none;
       color: inherit;
       border: none;
-      padding-bottom: 20px;
       font: inherit;
       cursor: pointer;
       outline: none;
@@ -65,6 +63,8 @@
   .editor-container {
     margin: 0 auto;
     max-width: 700px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .custom-editor {
@@ -123,3 +123,35 @@
   .disabled-button:hover {
     background-color: #ccc; /* Use the desired grey color */
   }
+
+  @media (max-width: 1023px) {
+    .emojis {
+      margin: 30px -16px -16px -16px; } }
+
+  @media (max-width: 600px) {
+    .emojis {
+      margin: 30px -8px -12px -8px;
+      border-radius: 8px; }
+      .editor-container {
+        padding: 20px;
+      } }
+
+      @media (max-width: 450px) {
+        .todays-date {
+          font-size: 40px; }
+          .emoji-reaction-prompt{
+            font-size: 15px;
+          }
+          .emojis .emoji-reaction {
+            padding-bottom: 0px;
+          } 
+          .editor-container {
+            padding: 10px;
+          }
+        .custom-editor {
+          height: 400px;
+        }
+      .submit-button {
+        margin: 0px;
+        padding: 10px 15px;
+      }}

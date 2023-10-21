@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import MonthlyCalendar from './MonthlyCalendar';
-import "../../styles/CalendarPage.css";
+import styles from "../../styles/CalendarPage.module.css";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Journal as JournalModel } from "../../models/journal";
 import * as JournalsApi from "../../utils/journal_api";
+
 
 const YearlyCalendar: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -70,26 +70,31 @@ const YearlyCalendar: React.FC = () => {
   };
 
   return (
-    <div className="yearly-view">
-      <div className='container'>
-        <h1>{`Year ${selectedDate.getFullYear()}`}</h1>
-        <div className="year-picker">
-          <label htmlFor="year">Select Date: </label>
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleChangeDate}
-            dateFormat="yyyy"
-            showYearPicker
-          />
-        </div>
-        </div>
-        <div className="monthly-calendars">
-          {[...Array(12)].map((_, month) => (
-            <MonthlyCalendar key={month} year={selectedDate.getFullYear()} month={month} moodData={moodData} updateMoodData={updateMoodData}/>
-          ))}
-        </div>
-      
+    <div className={styles['yearly-view']}>
+    <div className={styles.container}>
+      <h1 className={styles.yearTitle}>{`Year ${selectedDate.getFullYear()}`}</h1>
+      <div className={styles['year-picker']}>
+        <label htmlFor="year">Select Date: </label>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleChangeDate}
+          dateFormat="yyyy"
+          showYearPicker
+        />
+      </div>
     </div>
+    <div className={styles['monthly-calendars']}>
+      {[...Array(12)].map((_, month) => (
+        <MonthlyCalendar
+          key={month}
+          year={selectedDate.getFullYear()}
+          month={month}
+          moodData={moodData}
+          updateMoodData={updateMoodData}
+        />
+      ))}
+    </div>
+  </div>
   );
 };
 
