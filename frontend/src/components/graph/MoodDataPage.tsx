@@ -4,36 +4,26 @@ import React, { useState } from 'react';
 import YearlyMoodGraphs from './YearlyGraph';
 import MonthlyMoodGraphs from './MonthlyGraph';
 import styles from '../../styles/graph.module.css';
+import ReactDatePicker from 'react-datepicker';
 
 const MoodDataPage = () => {
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
     <div>
-      <div>
-        <label>
-          Select Year:
-          <input
-            type="number"
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(Number(e.target.value))}
-          />
-        </label>
-        <label>
-          Select Month:
-          <input
-            type="number"
-            min="1"
-            max="12"
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(Number(e.target.value))}
-          />
-        </label>
-      </div>
       <div className={styles.pageContainer}>
-      <YearlyMoodGraphs year={selectedYear} />
-      <MonthlyMoodGraphs year={selectedYear} month={selectedMonth} />
+      <div className={styles.labelContainer}>
+      <ReactDatePicker
+      closeOnScroll={true}
+            selected={selectedDate}
+            onChange={date => date && setSelectedDate(date)}
+            dateFormat="MMMM, yyyy"
+            showMonthYearPicker
+          />
+      </div>
+      
+      <YearlyMoodGraphs year={selectedDate.getFullYear()} />
+        <MonthlyMoodGraphs year={selectedDate.getFullYear()} month={selectedDate.getMonth() + 1} />
       </div>
     </div>
   );

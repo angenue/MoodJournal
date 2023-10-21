@@ -46,7 +46,7 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
   
     return (
       <div>
-        <h1>{`Yearly Mood Data for ${year}`}</h1>
+        <h1 className={styles.yearTitle}>{`Yearly Mood Data for ${year}`}</h1>
         <div className={styles.container}>
             <div className={`${styles["graphContainer"]}`}>
           <ScatterPlot

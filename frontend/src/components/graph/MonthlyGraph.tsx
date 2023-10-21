@@ -54,7 +54,7 @@ const MonthlyGraph: React.FC<MonthlyGraphProps> = ({ year, month}) => {
 
   return (
     <div>
-      <h1>{`Monthly Mood Data for ${selectedMonthName}, ${year}`}</h1>
+      <h1 className={styles.yearTitle}>{`Monthly Mood Data for ${selectedMonthName}, ${year}`}</h1>
 
       <div className={`${styles["container"]}`}>
         <div className={`${styles["graphContainer"]}`}>

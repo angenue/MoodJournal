@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useEffect, useRef }from 'react';
 import { Scatter } from 'react-chartjs-2';
 import styles from '../../styles/graph.module.css';
 import * as JournalsApi from "../../utils/journal_api";
@@ -12,6 +12,7 @@ interface ScatterPlotProps {
     colors: string[];
     xAxisLabels: string[];
   }
+  
 
   const ScatterPlot: React.FC<ScatterPlotProps> = ({ moodData, labels, colors, xAxisLabels }) => {
   const dataPoints = moodData.map(entry => ({
@@ -19,6 +20,8 @@ interface ScatterPlotProps {
     y: labels.indexOf(entry.mood),
     mood: entry.mood
   }));
+
+
 
   const data = {
     labels: moodData.map(entry => entry.mood),
@@ -33,6 +36,7 @@ interface ScatterPlotProps {
       borderColor: '#d2d0ba',
     }],
   };
+  
 
   const options = {
     scales: {
