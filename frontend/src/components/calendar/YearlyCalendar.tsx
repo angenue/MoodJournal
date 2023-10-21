@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MonthlyCalendar from './MonthlyCalendar';
 import styles from "../../styles/CalendarPage.module.css";
 import DatePicker from 'react-datepicker';
@@ -69,32 +69,50 @@ const YearlyCalendar: React.FC = () => {
     setSelectedDate(date);
   };
 
+  const [showYearPicker, setShowYearPicker] = useState(false);
+
+  const toggleYearPicker = () => {
+    setShowYearPicker(prev => !prev);
+  };
+
+  
+
   return (
-    <div className={styles['yearly-view']}>
-    <div className={styles.container}>
-      <h1 className={styles.yearTitle}>{`Year ${selectedDate.getFullYear()}`}</h1>
-      <div className={styles['year-picker']}>
-        <label htmlFor="year">Select Date: </label>
-        <DatePicker
-          selected={selectedDate}
-          onChange={handleChangeDate}
-          dateFormat="yyyy"
-          showYearPicker
-        />
+    <div className={styles["yearly-view"]}>
+      <div className={styles.container}>
+        <h1
+          className={styles.yearTitle}
+        >{`Year ${selectedDate.getFullYear()}`}</h1>
+
+        <div className={styles.calendarIcon} onClick={toggleYearPicker}>
+          <i className="fa fa-calendar" aria-hidden="true"></i>
+        </div>
+
+        <div className={styles["year-picker"]}>
+          {showYearPicker && (
+            <DatePicker
+            closeOnScroll={true}
+              selected={selectedDate}
+              onChange={handleChangeDate}
+              showYearPicker
+              dateFormat="yyyy"
+              yearItemNumber={6}
+            />
+          )}
+        </div>
+      </div>
+      <div className={styles["monthly-calendars"]}>
+        {[...Array(12)].map((_, month) => (
+          <MonthlyCalendar
+            key={month}
+            year={selectedDate.getFullYear()}
+            month={month}
+            moodData={moodData}
+            updateMoodData={updateMoodData}
+          />
+        ))}
       </div>
     </div>
-    <div className={styles['monthly-calendars']}>
-      {[...Array(12)].map((_, month) => (
-        <MonthlyCalendar
-          key={month}
-          year={selectedDate.getFullYear()}
-          month={month}
-          moodData={moodData}
-          updateMoodData={updateMoodData}
-        />
-      ))}
-    </div>
-  </div>
   );
 };
 

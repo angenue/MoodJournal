@@ -5,12 +5,41 @@
   height: 100vh;
       }
 
+      .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
       .yearTitle{
         padding-top: 20px;
     color: #7b9e87;
     font-size: 50px;
     text-align: center;
+    margin-right: 10px;
       }
+
+      .calendarIcon {
+        color: #5e747f;
+        cursor: pointer;
+        padding-top: 10px;
+      }
+
+      .calendarIcon i {
+        font-size: 1.5em; /* Adjust the size as needed */
+        vertical-align: middle;
+      }
+
+      .year-picker {
+        padding-top: 10px;
+        padding-left: 10px;
+      }
+
+      .react-datepicker__year-container {
+        background-color: #081833;
+  color: #969eac;
+      }
+      
       
       .monthly-calendars {
         display: grid;
@@ -18,8 +47,8 @@
         gap: 55px;
         justify-content: center; 
         justify-items: center;
-        padding-bottom: 100px;
         padding: 20px;
+        padding-bottom: 100px;
       }
 
       .monthly-calendar .react-calendar {
@@ -45,8 +74,9 @@
         .yearTitle {
           font-size: 30px;
         }
-       
       }
+
+     
 
       
       
