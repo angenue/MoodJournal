@@ -4,6 +4,9 @@ import journalRoutes from "./routes/journals"
 import userRoutes from "./routes/users";
 import morgan from "morgan";
 import createHttpError, { isHttpError} from "http-errors";
+import session from "express-session";
+import env from "./util/validateEnv";
+import MongoStore from "connect-mongo";
 
 const app = express();
 
@@ -11,8 +14,20 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
+app.use(session({
+  secret: env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie:{
+    maxAge:60 * 60 * 1000,
+  },
+  rolling: true,
+  store: MongoStore.create({
+    mongoUrl: env.MONGO_CONNECTION_STRING
+  }),
+}));
 
+app.use("/api/users", userRoutes);
 app.use("/api/journals", journalRoutes);
 
   app.use((req, res, next) => {
