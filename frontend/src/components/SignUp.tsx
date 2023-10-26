@@ -65,8 +65,6 @@ const SignUp = ({ onDismiss, onSignUpSuccessful }: SignUpProps) => {
                                 )}
                             </div>
 
-                           
-
                             <div className="mb-3">
                                 <label htmlFor="password" className="form-label">
                                     Password
@@ -82,7 +80,12 @@ const SignUp = ({ onDismiss, onSignUpSuccessful }: SignUpProps) => {
                                 {errors.password && (
                                     <div className="invalid-feedback">Password is required</div>
                                 )}
+                                <small id="passwordHelpBlock" className="form-text text-muted">
+  Your password must be 8-20 characters long.
+</small>
                             </div>
+
+
                             <div className="mb-3">
                                 <label htmlFor="confirmPassword" className="form-label">
                                     Confirm Password
@@ -100,8 +103,13 @@ const SignUp = ({ onDismiss, onSignUpSuccessful }: SignUpProps) => {
                                         Confirmation password is required
                                     </div>
                                 )}
+                                <small id="passwordHelpBlock" className="form-text text-muted">
+  Your password must be 8-20 characters long.
+</small>
                             </div>
                         </div>
+
+                        
                         <div className="modal-footer">
                             <button
                                 type="button"
