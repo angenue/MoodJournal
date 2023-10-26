@@ -8,6 +8,7 @@ import {Journal as JournalModel } from './models/journal';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import * as JournalsApi from "./utils/journal_api";
+import SignUp from "./components/SignUp";
 
 const App = () => {
 
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/Calendar" element={<YearlyCalendar/>} /> 
             <Route path="/Graph" element={<MoodDataPage/>} /> 
+            <Route path="/SignUp" element={<SignUp onDismiss={() => {}} onSignUpSuccessful={() => {}}/>} />
           </Routes>
         </div>
       </Router>

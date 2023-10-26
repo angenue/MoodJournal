@@ -24,6 +24,10 @@ const Sidebar = () => {
       <i className="fa-solid fa-chart-line" style={{ marginRight: '25px' }}></i><span>Graph</span>
       </Link>
     </li>
+<li>
+<Link to="/SignUp">Sign Up</Link>
+</li>
+    
   </ul>
 </div>
 
