@@ -9,12 +9,21 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import * as JournalsApi from "./utils/journal_api";
 import SignUp from "./components/SignUp";
+import Login from "./components/Login"
 
 const App = () => {
 
 
   return (
-    <div style={{ display: 'flex' }}>
+<Router>
+      <Routes>
+        <Route path="/" element={<Login onLoginSuccessful={() => {}}/>} />
+        <Route path="/signup" element={<SignUp onSignUpSuccessful={() => {}}/>} />
+      </Routes>
+    </Router>
+
+
+    /*<div style={{ display: 'flex' }}>
       <Router>
         <Sidebar />
         <div className="content">
@@ -28,7 +37,7 @@ const App = () => {
           </Routes>
         </div>
       </Router>
-    </div>
+    </div>*/
   );
 };
 
