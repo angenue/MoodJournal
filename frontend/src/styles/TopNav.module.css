@@ -1,16 +1,39 @@
+.container {
+  position: sticky;
+  top: 0; /* Stick to the top */
+  background-color: #FFFFFF;
+  height: 60px;
+  align-items: center; /* Center vertically */
+  display: flex;
+}
+
 .title {
   color: #5e747f;
   font-size: 30px;
   text-align: center; /* Center the text horizontally */
   font-weight: bold;
-  position: sticky;
-  top: 0; /* Stick to the top */
-  background-color: #FFFFFF;
-  height: 60px;
-  padding-left: 30px; /* Add some padding to the left */
+  margin-left: 30px;
   padding-top: 5px;
-  display: flex;
-  align-items: center; /* Center vertically */
-  /* Ensure it's above other elements */
+ 
 }
+
+.circle {
+  width: 40px;
+  height: 40px;
+  background-color: #f2f2f2;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px; /* Adjust margin as needed */
+  position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+}
+
+.personIcon {
+  color: #888; /* Gray color */
+}
+
 

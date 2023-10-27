@@ -1,28 +1,31 @@
-import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import styles from "../styles/SignUpLoginForm.module.css"
-import { LoginCredentials } from '../utils/journal_api';
-import * as JournalsApi from "../utils/journal_api";
 import { User } from '../models/user';
+import styles from "../styles/SignUpLoginForm.module.css";
+import * as JournalsApi from "../utils/journal_api";
+import { LoginCredentials } from '../utils/journal_api';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginProps {
+    
     onLoginSuccessful: (user: User) => void;
 }
 
-const Login = ({onLoginSuccessful}: LoginProps) => {
+const Login = ({ onLoginSuccessful}: LoginProps) => {
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<LoginCredentials>();
+    const navigate = useNavigate();
 
 
     async function onSubmit(credentials: LoginCredentials) {
         try {
             const user = await JournalsApi.login(credentials);
             onLoginSuccessful(user);
+            navigate('/Home');
         } catch (error) {
             alert(error);
             console.error(error);

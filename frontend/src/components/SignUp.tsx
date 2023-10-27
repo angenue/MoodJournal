@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import styles from "../styles/SignUpLoginForm.module.css"
 
 interface SignUpProps {
+  //onSignUpClicked: () => void,
     onSignUpSuccessful: (user: User) => void;
 }
 
