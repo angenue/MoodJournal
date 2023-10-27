@@ -13,7 +13,11 @@ import SignUp from "./components/SignUp";
 import Login from "./components/Login"
 import { User } from "./models/user";
 
-const UnauthenticatedApp = () => {
+interface UnauthenticatedAppProps {
+  onLogin: (user: User) => void // Assuming onLogin is a function that doesn't return anything
+}
+
+const UnauthenticatedApp = ({onLogin}: UnauthenticatedAppProps) => {
     const [loggedInUser, setLoggedInUser] = useState<User|null>(null);
 
   useEffect(() => {
@@ -30,16 +34,16 @@ const UnauthenticatedApp = () => {
   }, []);
 
   return (
-    <Router>
+    
     <Routes>
       <Route path="/" element={<Login onLoginSuccessful={(user) => {
-setLoggedInUser(user);
+onLogin(user);
       }}/>} />
       <Route path="/signup" element={<SignUp onSignUpSuccessful={(user) => {
-          setLoggedInUser(user);
+          onLogin(user);
       }} />} />
     </Routes>
-  </Router>
+  
   );
 };
 

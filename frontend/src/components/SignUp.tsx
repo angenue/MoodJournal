@@ -5,6 +5,8 @@ import * as JournalsApi from "../utils/journal_api";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/SignUpLoginForm.module.css"
+import 'react-toastify/dist/ReactToastify.css';
+import { errorMessage, successMessage } from "../utils/toastMessage";
 
 interface SignUpProps {
   //onSignUpClicked: () => void,

@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react"
 import styles from "../styles/Sidebar.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as JournalsApi from "../utils/journal_api";
 import { User } from "../models/user";
+import 'react-toastify/dist/ReactToastify.css';
+import { errorMessage, successMessage } from "../utils/toastMessage";
 
 interface SidebarProps {
   onLogoutSuccessful: () => void,
 }
 
 const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   async function logout() {
     try {
       await JournalsApi.logout();
       onLogoutSuccessful();
+      setIsLoggedIn(false);
+      navigate('/');
     } catch (error) {
+      errorMessage("Logout Unsuccessful")
       console.error(error);
       alert(error);
     }
@@ -28,7 +35,7 @@ const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
 
   <ul>
     <li>
-      <Link to="/Home" className={styles.Link}>
+      <Link to="/" className={styles.Link}>
         <i className="fas fa-home" style={{ marginRight: '25px' }}></i><span>Home</span>
       </Link>
     </li>
@@ -44,7 +51,7 @@ const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
     </li>
 
     <li className={styles.logout}>
-  <Link to="/login" className={styles.Link} onClick={logout}>
+  <Link to="/" className={styles.Link} onClick={logout}>
     <i className="fas fa-sign-out-alt" style={{ marginRight: '25px' }}></i><span>Logout</span>
   </Link>
 </li>

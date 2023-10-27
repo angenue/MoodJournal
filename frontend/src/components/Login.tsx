@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom";
 import { User } from '../models/user';
 import styles from "../styles/SignUpLoginForm.module.css";
 import * as JournalsApi from "../utils/journal_api";
 import { LoginCredentials } from '../utils/journal_api';
 import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { errorMessage, successMessage } from "../utils/toastMessage";
 
 interface LoginProps {
     
@@ -19,13 +22,15 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
         formState: { errors, isSubmitting },
     } = useForm<LoginCredentials>();
     const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
     async function onSubmit(credentials: LoginCredentials) {
         try {
             const user = await JournalsApi.login(credentials);
             onLoginSuccessful(user);
-            navigate('/Home');
+            setIsLoggedIn(true);
+            navigate('/');
         } catch (error) {
             alert(error);
             console.error(error);
@@ -70,7 +75,7 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
 
           <div className="d-flex justify-content-between">
             <button type="button" className={styles.linkBtn}  disabled={isSubmitting}>
-              <Link to="/SignUp" className={styles.link}>
+              <Link to="/signup" className={styles.link}>
                 Sign Up
               </Link>
             </button>

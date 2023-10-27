@@ -4,31 +4,31 @@ import TopNav from './components/TopNav';
 import HomePage from './components/HomePage';
 import YearlyCalendar from './components/calendar/YearlyCalendar';
 import MoodDataPage from "./components/graph/MoodDataPage";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes,useNavigate } from 'react-router-dom';
 import './styles/App.css';
 import { User } from './models/user';
 import * as JournalsApi from "./utils/journal_api";
+import 'react-toastify/dist/ReactToastify.css';
+import { successMessage } from "./utils/toastMessage";
 
-const AuthenticatedApp = () => {
-    const [loggedInUser, setLoggedInUser] = useState<User|null>(null);
+interface AuthenticatedAppProps {
+  onLogout: () => void;
+  loggedInUser: User | null; // Assuming onLogin is a function that doesn't return anything
+}
 
-    useEffect(() => {
-        async function fetchLoggedInUser() {
-          try {
-            const user = await JournalsApi.getLoggedInUser();
-            setLoggedInUser(user);
-          } catch (error) {
-            console.error(error);
-            
-          }
+const AuthenticatedApp = ({ onLogout, loggedInUser }: AuthenticatedAppProps) => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+      useEffect(() => {
+        if (loggedInUser) {
+            successMessage('Logged in successfully')
         }
-        fetchLoggedInUser();
-      }, []);
+    }, [loggedInUser]);
 
   return (
     <div style={{ display: 'flex' }}>
-      <Router>
-        <Sidebar onLogoutSuccessful={() => setLoggedInUser(null)}/>
+     
+        <Sidebar onLogoutSuccessful={onLogout}/>
         <div className="content">
           <TopNav loggedInUser={loggedInUser}/>
 
@@ -38,7 +38,7 @@ const AuthenticatedApp = () => {
             <Route path="/Graph" element={<MoodDataPage/>} /> 
           </Routes>
         </div>
-      </Router>
+      
     </div>
   );
 };
