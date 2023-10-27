@@ -36,7 +36,7 @@ const UnauthenticatedApp = ({onLogin}: UnauthenticatedAppProps) => {
   return (
     
     <Routes>
-      <Route path="/" element={<Login onLoginSuccessful={(user) => {
+      <Route path="/login" element={<Login onLoginSuccessful={(user) => {
 onLogin(user);
       }}/>} />
       <Route path="/signup" element={<SignUp onSignUpSuccessful={(user) => {

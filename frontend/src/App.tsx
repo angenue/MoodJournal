@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import AuthenticatedApp from "./AuthenticatedApp";
 import UnauthenticatedApp from "./UnauthenticatedApp";
 import './styles/App.css';
@@ -12,18 +12,17 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    async function fetchLoggedInUser() {
+    const fetchData = async () => {
       try {
         const user = await JournalsApi.getLoggedInUser();
         setLoggedInUser(user);
         setIsLoggedIn(!!user);
-        console.log(isLoggedIn)
       } catch (error) {
         console.error(error);
-        
       }
-    }
-    fetchLoggedInUser();
+    };
+
+    fetchData();
   }, []);
 
   const handleLogout = () => {
@@ -31,9 +30,9 @@ const App = () => {
     setLoggedInUser(null);
   };
 
-  const handleLogin = (user: any) => {
+  const handleLogin = (user: User) => {
     setIsLoggedIn(true);
-    setLoggedInUser(user);
+    //setLoggedInUser(user);
   };
 
   return (

@@ -22,14 +22,12 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
         formState: { errors, isSubmitting },
     } = useForm<LoginCredentials>();
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
     async function onSubmit(credentials: LoginCredentials) {
         try {
             const user = await JournalsApi.login(credentials);
             onLoginSuccessful(user);
-            setIsLoggedIn(true);
             navigate('/');
         } catch (error) {
             alert(error);

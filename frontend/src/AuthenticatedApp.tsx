@@ -17,20 +17,12 @@ interface AuthenticatedAppProps {
 }
 
 const AuthenticatedApp = ({ onLogout, loggedInUser }: AuthenticatedAppProps) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-      useEffect(() => {
-        if (loggedInUser) {
-            successMessage('Logged in successfully')
-        }
-    }, [loggedInUser]);
-
   return (
     <div style={{ display: 'flex' }}>
      
         <Sidebar onLogoutSuccessful={onLogout}/>
         <div className="content">
-          <TopNav loggedInUser={loggedInUser}/>
+          <TopNav/>
 
           <Routes>
             <Route path="/" element={<HomePage />} />

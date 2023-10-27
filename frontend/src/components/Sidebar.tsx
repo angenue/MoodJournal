@@ -12,14 +12,12 @@ interface SidebarProps {
 
 const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   async function logout() {
     try {
       await JournalsApi.logout();
       onLogoutSuccessful();
-      setIsLoggedIn(false);
-      navigate('/');
+      navigate('/login');
     } catch (error) {
       errorMessage("Logout Unsuccessful")
       console.error(error);
@@ -51,7 +49,7 @@ const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
     </li>
 
     <li className={styles.logout}>
-  <Link to="/" className={styles.Link} onClick={logout}>
+  <Link to="/login" className={styles.Link} onClick={logout}>
     <i className="fas fa-sign-out-alt" style={{ marginRight: '25px' }}></i><span>Logout</span>
   </Link>
 </li>
