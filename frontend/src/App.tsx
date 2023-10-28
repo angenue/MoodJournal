@@ -5,7 +5,7 @@ import UnauthenticatedApp from "./UnauthenticatedApp";
 import './styles/App.css';
 import { User } from "./models/user";
 import * as JournalsApi from "./utils/journal_api";
-import { Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-dom";
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState<User|null>(null);
@@ -37,7 +37,20 @@ const App = () => {
 
   return (
     <Router>
-      {isLoggedIn ? <AuthenticatedApp loggedInUser={loggedInUser} onLogout={handleLogout}/> : <UnauthenticatedApp onLogin={handleLogin} loggedInUser={loggedInUser}/>}
+      {isLoggedIn ? (
+        <AuthenticatedApp loggedInUser={loggedInUser} onLogout={handleLogout} />
+      ) : (
+        <Routes>
+          <Route
+            path="/"
+            element={<Navigate to="/Home" replace />}
+          />
+          <Route
+            path="/Home"
+            element={<UnauthenticatedApp loggedInUser={loggedInUser} onLogin={handleLogin} />}
+          />
+        </Routes>
+      )}
     </Router>
   );
 };
