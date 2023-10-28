@@ -17,37 +17,20 @@ interface FormData {
 }
 
 const HomePage = () => {
-
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
-  //const { register, handleSubmit, getValues, formState: {errors, isSubmitting }} = useForm<journalInput>();
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors, isSubmitting },
-  } = useForm<journalInput>({
-    defaultValues: {
-      mood: "",
-      journalEntry: ""
-    },
-  });
-
+  const [wordCount, setWordCount] = useState(0);
+  const { register, handleSubmit, getValues, setValue, formState: {errors, isSubmitting }} = useForm<journalInput>();
 
   const handleSelectEmoji = (mood: string) => {
     setSelectedMood(mood);
   };
 
-  async function onSubmit(input: journalInput) {
-    console.log("Form Data:", input); // Check the console for this log
+  const onSubmit: SubmitHandler<FormData> = async (input) => {
     try {
-      input.mood = mapEmojiToString(selectedMood); // Set the mood from selectedMood
+      input.mood = mapEmojiToString(selectedMood);
       const journalResponse = await JournalsApi.createJournal(input);
-      console.log("Journal Response:", journalResponse); // Check the console for this log
-
-      // Show a success toast
-    successMessage("💗 Diary Submitted");
-      
+      console.log("Journal Response:", journalResponse);
+      successMessage("💗 Diary Submitted");
     } catch (error) {
       errorMessage("Unable To Submit Diary")
       console.error(error);
@@ -55,11 +38,15 @@ const HomePage = () => {
     }
   }
 
-  const checkWordCount = () => {
-    const journalEntry = getValues("journalEntry");
-    if (journalEntry) {
-      const wordCount = journalEntry.split(/\s/).length;
-      setWordLimitExceeded(wordCount > 500);
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputText = e.target.value;
+    const words = inputText.trim().split(/\s+/);
+    setWordCount(words.length);
+
+    if (words.length > 500) {
+      const truncatedText = words.slice(0, 500).join(' ');
+      setValue("journalEntry", truncatedText);
+      setWordCount(500);
     }
   };
   
@@ -112,7 +99,7 @@ const HomePage = () => {
     placeholder="Write your journal entry..."
     rows={10}
     {...register("journalEntry")}
-    onChange={checkWordCount}
+    onChange={(e) => handleTextareaChange(e)}
   />
 
   <input
@@ -122,13 +109,11 @@ const HomePage = () => {
   />
 
 <div className={styles["editor-addons"]}>
-    <div className={styles["word-limit"]}>
-      {`${getValues("journalEntry")?.split(/\s/).length ?? 0} words / 500 limit`}
-    </div>
+<div className={styles["word-limit"]}>Word Count: {wordCount}/500</div>
 
     <button
-      className={styles["submit-button"]}
-      disabled={wordLimitExceeded || isSubmitting}
+      className={`${styles["submit-button"]} ${wordCount >= 500 ? styles["disabled-button"] : ""}`}
+      disabled={isSubmitting || wordCount >= 500}
       type="submit"
     >
       Submit Diary

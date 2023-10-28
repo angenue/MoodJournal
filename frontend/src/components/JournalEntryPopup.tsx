@@ -27,7 +27,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [journalEntry, setJournalEntry] = useState<string>(journalToEdit?.journalEntry || "");
-  const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
+  const [wordCount, setWordCount] = useState(0);
   const [selectedMood, setSelectedMood] = useState<string>(
     mapStringToEmoji(journalToEdit?.mood || "") || ""
   );
@@ -71,13 +71,16 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
     }
   }
 
-  const handleJournalInputChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const inputText = event.target.value;
-    setJournalEntry(inputText);
-    const wordCount = inputText.split(/\s/).length;
-    setWordLimitExceeded(wordCount > 500);
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputText = e.target.value;
+    const words = inputText.trim().split(/\s+/);
+    setWordCount(words.length);
+
+    if (words.length > 500) {
+      const truncatedText = words.slice(0, 500).join(' ');
+      setValue("journalEntry", truncatedText);
+      setWordCount(500);
+    }
   };
 
   const deleteJournal = async () => {
@@ -215,6 +218,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
             placeholder="Write your journal entry..."
             {...register("journalEntry")}
             rows={10}
+            onChange={(e) => handleTextareaChange(e)}
           />
           <input
             type="hidden"
@@ -223,13 +227,11 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
           />
 
           <div className={styles["editor-addons"]}>
-            <div className={styles["word-limit"]}>
-              {`${journalEntry.split(/\s/).length} words / 500 limit`}
-            </div>
+          <div className={styles["word-limit"]}>Word Count: {wordCount}/500</div>
 
             <button
-              className={styles["submit-button"]}
-              disabled={wordLimitExceeded || isSubmitting}
+              className={`${styles["submit-button"]} ${wordCount >= 500 ? styles["disabled-button"] : ""}`}
+              disabled={isSubmitting || wordCount >= 500}
               type="submit"
             >
               Save
