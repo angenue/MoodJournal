@@ -24,7 +24,6 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
   onDelete,
   selectedDate,
 }) => {
-  console.log("heyyyy");
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [journalEntry, setJournalEntry] = useState<string>(journalToEdit?.journalEntry || "");

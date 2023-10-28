@@ -20,17 +20,29 @@ const HomePage = () => {
 
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [wordLimitExceeded, setWordLimitExceeded] = useState(false);
-  const { register, handleSubmit, getValues, formState: {errors, isSubmitting }} = useForm<journalInput>();
+  //const { register, handleSubmit, getValues, formState: {errors, isSubmitting }} = useForm<journalInput>();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting },
+  } = useForm<journalInput>({
+    defaultValues: {
+      mood: "",
+      journalEntry: ""
+    },
+  });
+
 
   const handleSelectEmoji = (mood: string) => {
     setSelectedMood(mood);
   };
 
-  const onSubmit: SubmitHandler<FormData> = async (formData) => {
-    console.log("Form Data:", formData); // Check the console for this log
+  async function onSubmit(input: journalInput) {
+    console.log("Form Data:", input); // Check the console for this log
     try {
-      formData.mood = mapEmojiToString(selectedMood); // Set the mood from selectedMood
-      const journalResponse = await JournalsApi.createJournal(formData);
+      input.mood = mapEmojiToString(selectedMood); // Set the mood from selectedMood
+      const journalResponse = await JournalsApi.createJournal(input);
       console.log("Journal Response:", journalResponse); // Check the console for this log
 
       // Show a success toast
