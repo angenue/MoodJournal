@@ -28,7 +28,7 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
         try {
             const user = await JournalsApi.login(credentials);
             onLoginSuccessful(user);
-            navigate('/Home');
+            //navigate('/Home');
         } catch (error) {
             alert(error);
             console.error(error);
@@ -73,7 +73,7 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
 
           <div className="d-flex justify-content-between">
             <button type="button" className={styles.linkBtn}  disabled={isSubmitting}>
-              <Link to="/signup" className={styles.link}>
+              <Link to="/SignUp" className={styles.link}>
                 Sign Up
               </Link>
             </button>

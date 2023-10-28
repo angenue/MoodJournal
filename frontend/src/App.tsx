@@ -5,7 +5,7 @@ import UnauthenticatedApp from "./UnauthenticatedApp";
 import './styles/App.css';
 import { User } from "./models/user";
 import * as JournalsApi from "./utils/journal_api";
-import { Navigate, Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate} from "react-router-dom";
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState<User|null>(null);
@@ -35,28 +35,39 @@ const App = () => {
     setLoggedInUser(user);
   };
 
-  return (
-    <Router>
-      {isLoggedIn ? (
-        <AuthenticatedApp loggedInUser={loggedInUser} onLogout={handleLogout} />
-      ) : (
-        <Routes>
-          <Route
-            path="/"
-            element={<Navigate to="/Home" replace />}
-          />
-          <Route
-            path="/signup"
-            element={<Navigate to="/Home" replace />}
-          />
-          <Route
-            path="/Home"
-            element={<UnauthenticatedApp loggedInUser={loggedInUser} onLogin={handleLogin} />}
-          />
-        </Routes>
-      )}
-    </Router>
-  );
+  console.log('isLoggedIn:', isLoggedIn);
+console.log('loggedInUser:', loggedInUser);
+
+const navigate = useNavigate();
+
+useEffect(() => {
+    if (isLoggedIn && loggedInUser) {
+      if (window.location.pathname === "/" || window.location.pathname === "/SignUp") {
+        navigate("/Home", { replace: true });
+      }
+    } else {
+      if (window.location.pathname !== "/SignUp") {
+        navigate("/", { replace: true }); // Navigate to login if user is not logged in
+      }
+    }
+  }, [isLoggedIn, loggedInUser, navigate]);
+
+return (
+ 
+    <Routes>
+      <Route
+        path="*"
+        element={
+          isLoggedIn && loggedInUser ? (
+            <AuthenticatedApp loggedInUser={loggedInUser} onLogout={handleLogout} />
+          ) : (
+            <UnauthenticatedApp loggedInUser={loggedInUser} onLogin={handleLogin} />
+          )
+        }
+      />
+    </Routes>
+ 
+);
 };
 
 export default App;
