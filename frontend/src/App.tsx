@@ -46,6 +46,10 @@ const App = () => {
             element={<Navigate to="/Home" replace />}
           />
           <Route
+            path="/signup"
+            element={<Navigate to="/Home" replace />}
+          />
+          <Route
             path="/Home"
             element={<UnauthenticatedApp loggedInUser={loggedInUser} onLogin={handleLogin} />}
           />
