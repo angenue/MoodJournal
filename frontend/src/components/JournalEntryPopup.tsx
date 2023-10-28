@@ -229,13 +229,20 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
           <div className={styles["editor-addons"]}>
           <div className={styles["word-limit"]}>Word Count: {wordCount}/500</div>
 
-            <button
-              className={`${styles["submit-button"]} ${wordCount >= 500 ? styles["disabled-button"] : ""}`}
-              disabled={isSubmitting || wordCount >= 500}
-              type="submit"
-            >
-              Save
-            </button>
+          <div className={styles["button-container"]}>
+  <button
+    className={`${styles["submit-button"]} ${(!selectedMood || wordCount >= 500) ? styles["disabled-button"] : ""}`}
+    disabled={isSubmitting || !selectedMood || wordCount >= 500}
+    type="submit"
+    title={!selectedMood ? "Mood is required" : ""}
+  >
+    Save
+  </button>
+
+  <div className={styles["hint-text"]}>
+    {!selectedMood && "Mood is required"}
+  </div>
+</div>
           </div>
         </form>
       </div>

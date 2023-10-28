@@ -111,13 +111,22 @@ const HomePage = () => {
 <div className={styles["editor-addons"]}>
 <div className={styles["word-limit"]}>Word Count: {wordCount}/500</div>
 
-    <button
-      className={`${styles["submit-button"]} ${wordCount >= 500 ? styles["disabled-button"] : ""}`}
-      disabled={isSubmitting || wordCount >= 500}
-      type="submit"
-    >
-      Submit Diary
-    </button>
+<div className={styles["button-container"]}>
+  <button
+    className={`${styles["submit-button"]} ${(!selectedMood || wordCount >= 500) ? styles["disabled-button"] : ""}`}
+    disabled={isSubmitting || !selectedMood || wordCount >= 500}
+    type="submit"
+    title={!selectedMood ? "Mood is required" : ""}
+  >
+    Submit Diary
+  </button>
+
+  <div className={styles["hint-text"]}>
+    {!selectedMood && "Mood is required"}
+  </div>
+</div>
+
+
         </div>
       </form>
     </div>
