@@ -9,6 +9,7 @@ export enum MoodOptions {
   }
 
 const journalSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, required: true},
     mood: { type: String, enum: Object.values(MoodOptions), required: true },
     journalEntry: { type: String },
     date: { type: Date, default: Date.now }
