@@ -28,7 +28,7 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
         try {
             const user = await JournalsApi.login(credentials);
             onLoginSuccessful(user);
-            navigate('/');
+            navigate('/Home');
         } catch (error) {
             alert(error);
             console.error(error);

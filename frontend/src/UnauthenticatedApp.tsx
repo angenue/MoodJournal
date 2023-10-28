@@ -14,33 +14,21 @@ import Login from "./components/Login"
 import { User } from "./models/user";
 
 interface UnauthenticatedAppProps {
-  onLogin: (user: User) => void // Assuming onLogin is a function that doesn't return anything
+  onLogin: (user: User) => void,
+  loggedInUser: User | null
 }
 
-const UnauthenticatedApp = ({onLogin}: UnauthenticatedAppProps) => {
-    const [loggedInUser, setLoggedInUser] = useState<User|null>(null);
+const UnauthenticatedApp = ({onLogin, loggedInUser}: UnauthenticatedAppProps) => {
 
-  useEffect(() => {
-    async function fetchLoggedInUser() {
-      try {
-        const user = await JournalsApi.getLoggedInUser();
-        setLoggedInUser(user);
-      } catch (error) {
-        console.error(error);
-        
-      }
-    }
-    fetchLoggedInUser();
-  }, []);
 
   return (
     
     <Routes>
-      <Route path="/login" element={<Login onLoginSuccessful={(user) => {
-onLogin(user);
+      <Route path="/" element={<Login onLoginSuccessful={(loggedInUser) => {
+onLogin(loggedInUser);
       }}/>} />
-      <Route path="/signup" element={<SignUp onSignUpSuccessful={(user) => {
-          onLogin(user);
+      <Route path="/signup" element={<SignUp onSignUpSuccessful={(loggedInUser) => {
+          onLogin(loggedInUser);
       }} />} />
     </Routes>
   

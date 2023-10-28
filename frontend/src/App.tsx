@@ -32,12 +32,12 @@ const App = () => {
 
   const handleLogin = (user: User) => {
     setIsLoggedIn(true);
-    //setLoggedInUser(user);
+    setLoggedInUser(user);
   };
 
   return (
     <Router>
-      {isLoggedIn ? <AuthenticatedApp loggedInUser={loggedInUser} onLogout={handleLogout}/> : <UnauthenticatedApp onLogin={handleLogin}/>}
+      {isLoggedIn ? <AuthenticatedApp loggedInUser={loggedInUser} onLogout={handleLogout}/> : <UnauthenticatedApp onLogin={handleLogin} loggedInUser={loggedInUser}/>}
     </Router>
   );
 };

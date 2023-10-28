@@ -25,7 +25,7 @@ const AuthenticatedApp = ({ onLogout, loggedInUser }: AuthenticatedAppProps) => 
           <TopNav/>
 
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/Home" element={<HomePage />} />
             <Route path="/Calendar" element={<YearlyCalendar/>} /> 
             <Route path="/Graph" element={<MoodDataPage/>} /> 
           </Routes>

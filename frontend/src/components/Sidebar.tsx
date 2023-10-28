@@ -17,7 +17,7 @@ const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
     try {
       await JournalsApi.logout();
       onLogoutSuccessful();
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       errorMessage("Logout Unsuccessful")
       console.error(error);
@@ -33,7 +33,7 @@ const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
 
   <ul>
     <li>
-      <Link to="/" className={styles.Link}>
+      <Link to="/Home" className={styles.Link}>
         <i className="fas fa-home" style={{ marginRight: '25px' }}></i><span>Home</span>
       </Link>
     </li>
@@ -49,7 +49,7 @@ const Sidebar = ({onLogoutSuccessful}: SidebarProps) => {
     </li>
 
     <li className={styles.logout}>
-  <Link to="/login" className={styles.Link} onClick={logout}>
+  <Link to="/" className={styles.Link} onClick={logout}>
     <i className="fas fa-sign-out-alt" style={{ marginRight: '25px' }}></i><span>Logout</span>
   </Link>
 </li>
