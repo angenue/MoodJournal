@@ -101,6 +101,11 @@ function formatDate(date: Date) {
   
     afterAll(async () => {
       // Any cleanup logic after all tests have run
+      await request(app)
+          .post('/api/users/logout')
+          .set('Cookie', sessionCookie)
+          .expect(200); 
+
       await JournalModel.deleteMany({});
       await UserModel.deleteMany({});
     });
@@ -241,10 +246,6 @@ expect(formatDate(new Date(updatedJournalResponse.body.date))).toEqual(today);
   describe('Journal API errors', () => {
     let sessionCookie: string[];
     let journalIds: string[] = [];
-    const year = new Date().getFullYear(); // Use the current year for the test
-    const month = new Date().getMonth() + 1; // Use the current month for the test
-    // today's date in 'YYYY-MM-DD' format
-  const today = formatDate(new Date());
   
     beforeAll(async () => {
         await request(app)
@@ -298,6 +299,10 @@ expect(formatDate(new Date(updatedJournalResponse.body.date))).toEqual(today);
     });
   
     afterAll(async () => {
+        await request(app)
+          .post('/api/users/logout')
+          .set('Cookie', sessionCookie)
+          .expect(200); 
       // Any cleanup logic after all tests have run
       await JournalModel.deleteMany({});
       await UserModel.deleteMany({});
@@ -312,107 +317,75 @@ expect(formatDate(new Date(updatedJournalResponse.body.date))).toEqual(today);
         .expect(400);
 
       expect(newJournalResponse.body.error).toEqual("Mood is required");
+
+      const validJournalId = journalIds[0];
+      
+      //testing the update
+      const updatedJournalResponse = await request(app)
+        .patch(`/api/journals/${validJournalId}`)
+        .set('Cookie', sessionCookie)
+        .send({ journalEntry: 'hi i am updating this entry' })
+        .expect(400); 
      
+        expect(updatedJournalResponse.body.error).toEqual("Mood is required");
     })
 
 
     it('should throw error for invalid journal id', async() => {
+        const invalidIdFormat = 123;
+        //get journal by id
             const getResponse = await request(app)
-              .get(`/api/journals/123`) //using 123 because its not a mongoose id format
+              .get(`/api/journals/${invalidIdFormat}`) //using 123 because its not a mongoose id format
               .set('Cookie', sessionCookie)
               .expect(400); //invalid journal id
     
             expect(getResponse.body.error).toEqual('Invalid journal id');
+
+           //update
+            const getResponseUpdate = await request(app)
+              .patch(`/api/journals/${invalidIdFormat}`) 
+              .set('Cookie', sessionCookie)
+              .expect(400); //invalid journal id
+    
+            expect(getResponseUpdate.body.error).toEqual('Invalid journal id');
+
+            //delete
+            const getResponseDelete = await request(app)
+              .delete(`/api/journals/${invalidIdFormat}`) 
+              .set('Cookie', sessionCookie)
+              .expect(400); //invalid journal id
+    
+            expect(getResponseDelete.body.error).toEqual('Invalid journal id');
+
+            
     });
 
     it('should throw error for journal not found', async() => {
-
-        const validJournalId = journalIds[0]; // Take the first ID for testing
-       
+        const nonExistentId = '507f1f77bcf86cd799439011'; //random number id
+//get journal by id
             const getResponse = await request(app)
-              .get(`/api/journals/${validJournalId}`)
+              .get(`/api/journals/${nonExistentId}`)
               .set('Cookie', sessionCookie)
-              .expect(200); // Expecting a 200 OK response
+              .expect(404); // journal not found
       
-            // Verify that the retrieved journal matches the expected ID
-            expect(getResponse.body).toHaveProperty('_id', validJournalId);
-            expect(getResponse.body.mood).toEqual('happy');
-  expect(getResponse.body.journalEntry).toEqual('This is a test');
-  expect(formatDate(new Date(getResponse.body.date))).toEqual(today);
-        
-    });
+  expect(getResponse.body.error).toEqual('Journal entry not found');  
 
-
-
-    it('should get journal by year',async () => {
-        const response = await request(app)
-      .get(`/api/journals/${year}`)
-      .set('Cookie', sessionCookie)
-      .expect(200);
-
-      const journals = response.body;
-    journals.forEach((journal: { date: string | number | Date; }) => {
-      expect(new Date(journal.date).getFullYear()).toEqual(year);
-    });
-        
-    });
-
-    it('should get journal by month and year', async() => {
-        const response = await request(app)
-      .get(`/api/journals/${year}/${month}`)
-      .set('Cookie', sessionCookie)
-      .expect(200);
-
-    // Verify that all returned journals have dates within the specified year and month
-    const journals = response.body;
-    journals.forEach((journal: { date: string | number | Date; }) => {
-      const journalDate = new Date(journal.date);
-      expect(journalDate.getFullYear()).toEqual(year);
-      expect(journalDate.getMonth() + 1).toEqual(month); // +1 because getMonth() is zero-indexed
-    });
-
-    });
-  
-    it('should update a journal entry', async () => {
-        const validJournalId = journalIds[0];
-      // Test for updating the journal entry created in beforeEach
-      const updatedJournalResponse = await request(app)
-        .patch(`/api/journals/${validJournalId}`)
-        .set('Cookie', sessionCookie)
-        .send({ mood: 'content', journalEntry: 'hi i am updating this entry' })
-        .expect(200); 
-
-        expect(updatedJournalResponse.body.mood).toEqual('content');
-      expect(updatedJournalResponse.body.journalEntry).toEqual('hi i am updating this entry')
-      expect(formatDate(new Date(updatedJournalResponse.body.date))).toEqual(today);
-
-      // fetch the journal entry to verify the update was successful
-  const fetchUpdatedJournalResponse = await request(app)
-  .get(`/api/journals/${validJournalId}`)
+  //update
+  const getResponseUpdate = await request(app)
+  .patch(`/api/journals/${nonExistentId}`) 
   .set('Cookie', sessionCookie)
-  .expect(200);
+  .send({ mood: 'content',journalEntry: 'hi i am updating this entry' })
+  .expect(404); //invalid journal id
 
-// Verify the fetched journal entry has the updated values
-expect(fetchUpdatedJournalResponse.body.mood).toEqual('content');
-expect(fetchUpdatedJournalResponse.body.journalEntry).toEqual('hi i am updating this entry');
-expect(formatDate(new Date(updatedJournalResponse.body.date))).toEqual(today);
-    });
-  
-    it('should delete journals', async () => {
-        const journalIdToDelete = journalIds[0]; // Take the first ID for deletion
+expect(getResponseUpdate.body.error).toEqual('Journal not found');
 
-        await request(app)
-        .delete(`/api/journals/${journalIdToDelete}`)
-        .set('Cookie', sessionCookie)
-        .expect(204); 
+//delete
+const getResponseDelete = await request(app)
+  .delete(`/api/journals/${nonExistentId}`) 
+  .set('Cookie', sessionCookie)
+  .expect(404); //invalid journal id
 
-         // fetch the deleted journal entry
-         const getResponse = await request(app)
-         .get(`/api/journals/${journalIdToDelete}`)
-         .set('Cookie', sessionCookie)
-         .expect(404); 
-
-  expect(getResponse.body.error).toEqual('Journal entry not found');
+expect(getResponseDelete.body.error).toEqual('Journal not found');
     });
 
   });
