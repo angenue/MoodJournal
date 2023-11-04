@@ -238,7 +238,7 @@ expect(formatDate(new Date(updatedJournalResponse.body.date))).toEqual(today);
 
 
   //testing errors
-  /*describe('Journal API Endpoints -- errors', () => {
+  describe('Journal API errors', () => {
     let sessionCookie: string[];
     let createdJournalId: string;
 
@@ -290,9 +290,58 @@ expect(formatDate(new Date(updatedJournalResponse.body.date))).toEqual(today);
 
   describe('User not authenticated errors', () => {
     //let sessionCookie: string[];
-    //let createdJournalId: string;
 
-  });*/
+    it('should get user not authenticated for creating journal', async() => {
+        await request(app)
+        .post('/api/journals')
+        .send({ mood: 'angry', journalEntry: 'hi this is another test' })
+        .expect(401);  //user not authenticated
+    })
+      
+
+    it('should get user not authenticated for getting all journals', async() => {
+      //getting all journals
+      await request(app)
+      .get('/api/journals')
+      .expect(401); 
+    });
+
+    it('should get user not authenticated for getting a journal', async() => {
+           await request(app)
+              .get(`/api/journals/65469b63858039d742d0ac92`)
+              .expect(401);
+        
+    });
+
+    it('should get user not authenticated for getting journal by year',async () => {
+       await request(app)
+      .get(`/api/journals/2023`)
+      .expect(401);
+        
+    });
+
+    it('should get user not authenticated for getting journal by year and month', async() => {
+       await request(app)
+      .get(`/api/journals/2023/10`)
+      .expect(401);
+
+    });
+  
+    it('should get user not authenticated for updating journal', async () => {
+      await request(app)
+        .patch(`/api/journals/65469b63858039d742d0ac92`)
+        .send({ mood: 'content', journalEntry: 'hi i am updating this entry' })
+        .expect(401); 
+    });
+  
+    it('should get user not authenticated for deleting journal', async () => {
+        await request(app)
+        .delete(`/api/journals/65469b63858039d742d0ac92`)
+        .expect(401); 
+
+    });
+
+  });
 
 
   
