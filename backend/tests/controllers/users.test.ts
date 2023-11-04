@@ -2,17 +2,15 @@ import request from 'supertest';
 import app from '../../src/app'; 
 import mongoose from 'mongoose';
 import UserModel from '../../src/models/user';
+import { mongoStore } from '../../src/app';
 
 // Connect to your test database before the tests run
 beforeAll(async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_CONNECTION_STRING_TEST || 'mongodb://localhost:27017/moodjournal_test');
-    console.log('Connected to the test database');
-  } catch (error) {
-    console.error('Failed to connect to the test database', error);
-  }
-}, 30000);
-
+    if (!process.env.MONGO_CONNECTION_STRING_TEST) {
+      throw new Error('MONGO_CONNECTION_STRING_TEST environment variable is not set.');
+    }
+    await mongoose.connect(process.env.MONGO_CONNECTION_STRING_TEST);
+  });
   
 
 // Clear the users collection before each test
@@ -22,13 +20,22 @@ beforeEach(async () => {
 
 // Disconnect from the test database after all tests have run
 afterAll(async () => {
-  await mongoose.disconnect();
-});
-
-const email = 'test@example.com';
-    const password = 'password123';
+    console.log('Disconnecting database...');
+    await mongoose.disconnect();
+    console.log('Database disconnected');
+    
+    if (mongoose.connection.readyState !== 0) {
+      console.error('Database did not close!');
+    }
+  
+    // Close the session store
+    await mongoStore.close();
+  });
+  
 
 describe('testing user signup', () => {
+    const email = 'testing@example.com';
+    const password = 'password123';
   it('should create a new user and checks if email already in use', async () => {
     // First attempt to create a user
     await request(app)
@@ -68,6 +75,8 @@ describe('testing user signup', () => {
 
 describe('Testing login and logout', () => {
     let sessionCookie: string[];
+    const email = 't@example.com';
+    const password = 'password123';
 
   beforeAll(async () => {
     // Sign up

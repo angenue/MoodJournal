@@ -1,13 +1,30 @@
 // src/server.ts
+import dotenv from 'dotenv';
+import app from "./app";
+import validateEnv from './util/validateEnv';
 import mongoose from "mongoose";
+dotenv.config(); 
+const env = validateEnv();
+const port = env.PORT;
 
-const connectionString = process.env.NODE_ENV === 'test'
-  ? process.env.MONGO_CONNECTION_STRING_TEST!
-  : process.env.MONGO_CONNECTION_STRING!;
+let connectionString;
 
+if (process.env.NODE_ENV === 'test') {
+  connectionString = process.env.MONGO_CONNECTION_STRING_TEST;
+} else {
+  connectionString = process.env.MONGO_CONNECTION_STRING;
+}
+
+if (!connectionString) {
+  throw new Error('Database connection string is not set.');
+}
   mongoose.connect(connectionString)
   .then(() => {
-    console.log(`Connected to MongoDB at ${connectionString}`);
-    console.log(`Current DB: ${mongoose.connection.db.databaseName}`); // This should log 'moodjournal_test'
+
+    console.log("Mongoose connected");
+  app.listen(port, () => {
+    console.log("Server running on port: " + port);
+  });
+  
   })
   .catch(err => console.error(err));
