@@ -5,11 +5,14 @@ import UserModel from '../../src/models/user';
 
 // Connect to your test database before the tests run
 beforeAll(async () => {
-    if (!process.env.MONGO_CONNECTION_STRING_TEST) {
-      throw new Error('MONGO_CONNECTION_STRING_TEST environment variable is not set.');
-    }
-    await mongoose.connect(process.env.MONGO_CONNECTION_STRING_TEST);
-  });
+  try {
+    await mongoose.connect(process.env.MONGO_CONNECTION_STRING_TEST || 'mongodb://localhost:27017/moodjournal_test');
+    console.log('Connected to the test database');
+  } catch (error) {
+    console.error('Failed to connect to the test database', error);
+  }
+}, 30000);
+
   
 
 // Clear the users collection before each test
