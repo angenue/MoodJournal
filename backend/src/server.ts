@@ -1,13 +1,13 @@
-import app from "./app";
-import env from "./util/validateEnv"
+// src/server.ts
 import mongoose from "mongoose";
 
-const port = env.PORT;
+const connectionString = process.env.NODE_ENV === 'test'
+  ? process.env.MONGO_CONNECTION_STRING_TEST!
+  : process.env.MONGO_CONNECTION_STRING!;
 
-mongoose.connect(env.MONGO_CONNECTION_STRING).then(() => {
-  console.log("Mongoose connected");
-  app.listen(port, () => {
-    console.log("Server running on port: " + port);
-  });
-})
-.catch(console.error);
+  mongoose.connect(connectionString)
+  .then(() => {
+    console.log(`Connected to MongoDB at ${connectionString}`);
+    console.log(`Current DB: ${mongoose.connection.db.databaseName}`); // This should log 'moodjournal_test'
+  })
+  .catch(err => console.error(err));

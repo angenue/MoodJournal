@@ -5,10 +5,10 @@ import UserModel from '../../src/models/user';
 
 // Connect to your test database before the tests run
 beforeAll(async () => {
-    if (!process.env.MONGO_CONNECTION_STRING) {
+    if (!process.env.MONGO_CONNECTION_STRING_TEST) {
       throw new Error('MONGO_CONNECTION_STRING_TEST environment variable is not set.');
     }
-    await mongoose.connect(process.env.MONGO_CONNECTION_STRING);
+    await mongoose.connect(process.env.MONGO_CONNECTION_STRING_TEST);
   });
   
 
