@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.get("/", JournalsController.getJournals);
 
-router.get("/:year", JournalsController.getJournalsByYear);
+router.get("/:year(\\d{4})", JournalsController.getJournalsByYear);
 
-router.get('/:year/:month', JournalsController.getJournalsByYearAndMonth);
+router.get('/:year(\\d{4})/:month(\\d{1,2})', JournalsController.getJournalsByYearAndMonth);
 
 router.get("/:journalId", JournalsController.getJournal);
 
