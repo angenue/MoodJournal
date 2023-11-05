@@ -20,6 +20,8 @@ beforeEach(async () => {
 
 // Disconnect from the test database after all tests have run
 afterAll(async () => {
+  await mongoose.connection.db.dropDatabase();
+  
     console.log('Disconnecting database...');
     await mongoose.disconnect();
     console.log('Database disconnected');
