@@ -17,7 +17,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 export const mongoStore = MongoStore.create({
-  mongoUrl: env.MONGO_CONNECTION_STRING
+  mongoUrl: process.env.NODE_ENV === 'test' ? env.MONGO_CONNECTION_STRING_TEST : env.MONGO_CONNECTION_STRING
 });
 app.use(session({
   secret: env.SESSION_SECRET,
