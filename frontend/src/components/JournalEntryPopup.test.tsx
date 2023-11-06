@@ -95,8 +95,12 @@ describe("Journal Entry Popup", () => {
       expect(screen.getByText("Tue Oct 03 2023")).toBeInTheDocument();
     });
 
-    const journalEntryTextarea = screen.getByDisplayValue(mockJournal.journalEntry);
-    expect(journalEntryTextarea).toBeInTheDocument();
+    const textarea = screen.getByPlaceholderText('Write your journal entry...');
+  expect(textarea.value).toBe(mockJournal.journalEntry);
+
+  // The word count should reflect the number of words in the mock journal entry
+  const wordCount = mockJournal.journalEntry.split(/\s+/).filter(Boolean).length;
+  expect(screen.getByText(`Word Count: ${wordCount}/500`)).toBeInTheDocument();
 
     const selectedMoodButton = screen.getByRole('button', { name: '😃' });
 expect(selectedMoodButton).toHaveClass('active');
@@ -186,6 +190,6 @@ describe("Journal Entry Popup CRUD", () => {
   it('deletes a journal using the delete button', () => {
     const mockJournal = createMockJournal();
     renderJournalEntryPopup(mockJournal);
-    
+
   })
 });

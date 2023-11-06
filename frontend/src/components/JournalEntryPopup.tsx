@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { journalInput } from "../utils/journal_api";
 import popupStyles from "../styles/JournalPopup.module.css";
@@ -71,8 +71,13 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
     }
   }
 
+  useEffect(() => {
+    setWordCount(journalEntry.split(/\s+/).filter(Boolean).length); // This will count words separated by one or more whitespace characters
+  }, [journalEntry]);
+
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputText = e.target.value;
+    setJournalEntry(inputText);
     const words = inputText.trim().split(/\s+/);
     setWordCount(words.length);
 
@@ -216,6 +221,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
           <textarea
             className={popupStyles["custom-editor-popup"]}
             placeholder="Write your journal entry..."
+            value={journalEntry}
             {...register("journalEntry")}
             rows={10}
             onChange={(e) => handleTextareaChange(e)}
