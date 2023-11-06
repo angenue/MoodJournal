@@ -88,14 +88,14 @@ describe("Journal Entry Popup", () => {
     const mockJournal = createMockJournal();
 
     renderJournalEntryPopup(mockJournal);
-  
+
     // Wait for the JournalEntryPopup to be displayed
     await waitFor(() => {
       // Assert that the popup is displayed with the correct data
       expect(screen.getByText("Tue Oct 03 2023")).toBeInTheDocument();
     });
 
-    const textarea = screen.getByPlaceholderText('Write your journal entry...');
+    const textarea = screen.getByPlaceholderText('Write your journal entry...') as HTMLTextAreaElement;
   expect(textarea.value).toBe(mockJournal.journalEntry);
 
   // The word count should reflect the number of words in the mock journal entry
@@ -178,18 +178,69 @@ describe("Journal Entry Popup CRUD", () => {
     jest.clearAllMocks();
   });
 
-  it('creates a journal', () => {
+  it('creates a journal', async () => {
+    createJournal.mockResolvedValue({ data: '💗 Diary Submitted' });
+
     renderJournalEntryPopup(undefined);
+
+    const happyEmoji = screen.getByText('😃');
+  const textarea = screen.getByPlaceholderText('Write your journal entry...') as HTMLTextAreaElement;
+  const submitButton = screen.getByText('Save');
+
+  fireEvent.click(happyEmoji);
+    fireEvent.change(textarea, { target: { value: 'Today was a good day' } });
+  
+
+    await waitFor(() => {
+        expect(textarea.value).toBe('Today was a good day');
+      },{ timeout: 10000 }    );
+
+  
+    fireEvent.click(submitButton);
+
+    await waitFor(() => expect(createJournal).toHaveBeenCalled());
+
+    console.log(createJournal.mock.calls);
+
+    expect(createJournal).toHaveBeenCalledWith({
+      mood: 'happy',
+      journalEntry: 'Today was a good day',
+      selectedDate: selectedDate,
+    });
   })
 
-  it('updates a journal', () => {
+  it('updates a journal', async () => {
     const mockJournal = createMockJournal();
     renderJournalEntryPopup(mockJournal);
+
+    const angryEmoji = screen.getByText('😡');
+  const textarea = screen.getByText('Hello this is a test') as HTMLTextAreaElement;
+  const submitButton = screen.getByText('Save');
+
+  fireEvent.click(angryEmoji);
+    fireEvent.change(textarea, { target: { value: 'updating journal entry popup' } });
+
+    expect(textarea.value).toBe('updating journal entry popup');
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => expect(updateJournal).toHaveBeenCalled());
+
+    console.log(updateJournal.mock.calls);
+
+    expect(updateJournal).toHaveBeenCalledWith(
+        mockJournal._id,
+        {
+          mood: 'angry',
+          journalEntry: 'updating journal entry popup',
+          selectedDate: selectedDate,
+        }
+      );
+
   })
 
   it('deletes a journal using the delete button', () => {
     const mockJournal = createMockJournal();
     renderJournalEntryPopup(mockJournal);
-
   })
 });

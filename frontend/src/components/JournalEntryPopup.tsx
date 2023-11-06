@@ -85,6 +85,8 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
       const truncatedText = words.slice(0, 500).join(' ');
       setValue("journalEntry", truncatedText);
       setWordCount(500);
+    } else {
+      setValue("journalEntry", inputText);
     }
   };
 
