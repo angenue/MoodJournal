@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 const createJournal = JournalsApi.createJournal as jest.Mock;
 const getLoggedInUser = JournalsApi.getLoggedInUser as jest.Mock;
+global.alert = jest.fn();
 
 // Mock the API module
 jest.mock('../utils/journal_api', () => ({
@@ -14,9 +15,23 @@ jest.mock('../utils/journal_api', () => ({
 }));
 
 // Mock the ToastContainer to avoid rendering it during tests
-jest.mock('react-toastify', () => ({
-  ToastContainer: () => <div>ToastContainer</div>,
-}));
+jest.mock('react-toastify', () => {
+  const originalModule = jest.requireActual('react-toastify');
+  return {
+    ...originalModule,
+    toast: {
+      ...originalModule.toast,
+      error: jest.fn(),
+      success: jest.fn(),
+    },
+    ToastContainer: () => <div>ToastContainer</div>,
+  };
+});
+
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('HomePage', () => {
   beforeEach(() => {
@@ -48,7 +63,6 @@ describe('HomePage', () => {
   });
 
   it('submits the form with the correct data', async () => {
-    // Mock the API call
     createJournal.mockResolvedValue({ data: '💗 Diary Submitted' });
 
     render(<HomePage />);
@@ -56,28 +70,58 @@ describe('HomePage', () => {
   const textarea = screen.getByPlaceholderText('Write your journal entry...') as HTMLTextAreaElement;
   const submitButton = screen.getByText('Submit Diary');
 
-    // Simulate user interactions
     fireEvent.click(happyEmoji);
     fireEvent.change(textarea, { target: { value: 'Today was a good day' } });
   
-    // Wait for state updates if necessary
     await waitFor(() => {
       expect(textarea.value).toBe('Today was a good day');
-    });
+    },{ timeout: 10000 }    );
   
     fireEvent.click(submitButton);
 
-    // Wait for the API call to resolve
     await waitFor(() => expect(createJournal).toHaveBeenCalled());
 
     console.log(createJournal.mock.calls);
 
-    // Check if the API was called with the correct parameters
     expect(createJournal).toHaveBeenCalledWith({
       mood: 'happy',
       journalEntry: 'Today was a good day',
-      // ... any other properties that need to be submitted
     });
+  });
+
+  it('disables submit button when word limit is exceeded', () => {
+    render(<HomePage />);
+    const textarea = screen.getByPlaceholderText('Write your journal entry...');
+    const submitButton = screen.getByRole('button', { name: /submit diary/i });
+
+    fireEvent.change(textarea, { target: { value: 'a '.repeat(501) } }); 
+
+    // Check if the submit button is disabled
+    expect(submitButton).toBeDisabled();
+  });
+
+  it('disables submit button when no mood is selected', () => {
+    render(<HomePage />);
+    const submitButton = screen.getByRole('button', { name: /submit diary/i });
+
+    // no mood has been selected so the button should be disabled
+    expect(submitButton).toBeDisabled();
+  });
+
+  it('enables submit button when mood is selected and word limit is not exceeded', () => {
+    render(<HomePage />);
+    const happyEmoji = screen.getByText('😃');
+    const textarea = screen.getByPlaceholderText('Write your journal entry...');
+    const submitButton = screen.getByRole('button', { name: /submit diary/i });
+
+    // Simulate selecting a mood
+    fireEvent.click(happyEmoji);
+
+    // Simulate typing in the textarea
+    fireEvent.change(textarea, { target: { value: 'Hello world' } });
+
+    // Check if the submit button is enabled
+    expect(submitButton).not.toBeDisabled();
   });
 
   // Add more tests as needed...

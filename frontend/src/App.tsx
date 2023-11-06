@@ -6,8 +6,10 @@ import './styles/App.css';
 import { User } from "./models/user";
 import * as JournalsApi from "./utils/journal_api";
 import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate} from "react-router-dom";
+import ReactModal from "react-modal";
 
 const App = () => {
+  
   const [loggedInUser, setLoggedInUser] = useState<User|null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
