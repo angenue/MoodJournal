@@ -33,6 +33,11 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+
 describe('HomePage', () => {
   beforeEach(() => {
     // Mock the getLoggedInUser to return a user object
@@ -123,6 +128,4 @@ describe('HomePage', () => {
     // Check if the submit button is enabled
     expect(submitButton).not.toBeDisabled();
   });
-
-  // Add more tests as needed...
 });

@@ -9,7 +9,7 @@ import { errorMessage, successMessage } from "../utils/toastMessage";
 import * as JournalsApi from "../utils/journal_api";
 import CustomModal from "../utils/deleteConfirmation";
 
-interface JournalEntryPopupProps {
+export interface JournalEntryPopupProps {
   journalToEdit?: Journal;
   onSave: (journal: Journal) => void;
   onDelete: (journal: Journal) => void;
