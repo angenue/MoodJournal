@@ -3,12 +3,9 @@ import YearlyCalendar from "./YearlyCalendar";
 import * as JournalsApi from "../../utils/journal_api";
 import { Journal } from "../../models/journal";
 
-// Mock the JournalsApi module
 jest.mock("../../utils/journal_api", () => ({
     fetchJournalsByYear: jest.fn(),
   }));
-
-  const fetchJournalsByYear = JournalsApi.fetchJournalsByYear as jest.Mock;
   
   describe('YearlyCalendar', () => {
     beforeEach(() => {

@@ -3,61 +3,44 @@ import MonthlyCalendar from "./MonthlyCalendar";
 import * as JournalsApi from "../../utils/journal_api";
 import { Journal } from "../../models/journal";
 
-// Mock the JournalsApi module
 jest.mock('../../utils/journal_api');
 
-// Define a mock for the updateMoodData function
 const mockUpdateMoodData = jest.fn();
 const fetchJournals = JournalsApi.fetchJournals as jest.Mock;
 
 const selectedDate = new Date(2023, 9, 3);
 
-// Define a mock moodData Map
 const mockMoodData = new Map([
   ['2023-10-03', 'happy'],
 ]);
 
-const renderMonthlyCalendar = () => {
-    render(
-        <MonthlyCalendar
-          year={2023}
-          month={9} // October (0-indexed)
-          moodData={mockMoodData}
-          updateMoodData={mockUpdateMoodData}
-        />
-      );
+  const renderMonthlyCalendar = (overrides = {}) => {
+    const props = {
+      year: 2023,
+      month: 9, // October (0-indexed)
+      moodData: mockMoodData,
+      updateMoodData: mockUpdateMoodData,
+      ...overrides, // This allows you to pass in any props you want to override
+    };
+  
+    return render(<MonthlyCalendar {...props} />);
   };
 
 describe('MonthlyCalendar', () => {
   beforeEach(() => {
-    // Reset mocks before each test
+
     jest.resetAllMocks();
   });
 
   it('renders with correct month and year', () => {
-    const { getByText } = render(
-      <MonthlyCalendar
-        year={2023}
-        month={9} // October (0-indexed)
-        moodData={mockMoodData}
-        updateMoodData={mockUpdateMoodData}
-      />
-    );
+    const { getByText } = renderMonthlyCalendar();
 
-    // Check if the calendar is showing October 2023
     // eslint-disable-next-line testing-library/prefer-screen-queries
     expect(getByText('October 2023')).toBeInTheDocument();
   });
 
   it('colors days based on moodData', () => {
-    render(
-      <MonthlyCalendar
-        year={2023}
-        month={9} // October (0-indexed)
-        moodData={mockMoodData}
-        updateMoodData={mockUpdateMoodData}
-      />
-    );
+    renderMonthlyCalendar();
 
     // Check if October 3rd has the correct color class
     const dayTiles = screen.getAllByRole('button');
@@ -74,14 +57,7 @@ describe('MonthlyCalendar', () => {
       date: selectedDate, },
     ]);
 
-    render(
-      <MonthlyCalendar
-        year={2023}
-        month={9} // October (0-indexed)
-        moodData={mockMoodData}
-        updateMoodData={mockUpdateMoodData}
-      />
-    );
+    renderMonthlyCalendar();
 
     const dayTiles = screen.getAllByRole('button');
     const dayTile = dayTiles.find(tile => tile.textContent === '3');
@@ -107,14 +83,7 @@ describe('MonthlyCalendar', () => {
         date: selectedDate, },
       ]);
 
-    render(
-      <MonthlyCalendar
-        year={2023}
-        month={9} // October (0-indexed)
-        moodData={mockMoodData}
-        updateMoodData={mockUpdateMoodData}
-      />
-    );
+      renderMonthlyCalendar();
 
     const dayTiles = screen.getAllByRole('button');
     const dayTile = dayTiles.find(tile => tile.textContent === '3');
@@ -145,14 +114,7 @@ describe('MonthlyCalendar', () => {
         date: selectedDate, },
       ]);
 
-    render(
-      <MonthlyCalendar
-        year={2023}
-        month={9} // October (0-indexed)
-        moodData={mockMoodData}
-        updateMoodData={mockUpdateMoodData}
-      />
-    );
+      renderMonthlyCalendar();
 
     const dayTiles = screen.getAllByRole('button');
     const dayTile = dayTiles.find(tile => tile.textContent === '3');
