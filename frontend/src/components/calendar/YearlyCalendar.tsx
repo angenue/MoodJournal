@@ -69,8 +69,6 @@ const YearlyCalendar: React.FC = () => {
     setShowYearPicker(prev => !prev);
   };
 
-  
-
   return (
     <div className={styles["yearly-view"]}>
       <div className={styles.container}>
@@ -78,9 +76,9 @@ const YearlyCalendar: React.FC = () => {
           className={styles.yearTitle}
         >{`Year ${selectedDate.getFullYear()}`}</h1>
 
-        <div className={styles.calendarIcon} onClick={toggleYearPicker} aria-label="Select Year">
+        <button className={styles.calendarIcon} onClick={toggleYearPicker} aria-label="Select Year">
           <i className="fa fa-calendar" aria-hidden="true"></i>
-        </div>
+        </button>
 
         <div className={styles["year-picker"]}>
           {showYearPicker && (

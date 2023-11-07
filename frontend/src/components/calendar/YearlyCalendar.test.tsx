@@ -1,4 +1,4 @@
-import { render, fireEvent, screen, waitFor, act } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, act, within } from "@testing-library/react";
 import YearlyCalendar from "./YearlyCalendar";
 import * as JournalsApi from "../../utils/journal_api";
 import { Journal } from "../../models/journal";
@@ -28,24 +28,44 @@ jest.mock("../../utils/journal_api", () => ({
   });
     });
   
-    /*it('toggles year picker on calendar icon click', () => {
+    it('toggles year picker on calendar icon click',async () => {
       render(<YearlyCalendar />);
       const calendarIcon = screen.getByRole('button', { name: /Select Year/i });
       fireEvent.click(calendarIcon);
-      expect(screen.getByText('2023-2028')).toBeInTheDocument();
+      const datePicker = screen.getByRole('textbox'); 
+  expect(datePicker).toBeInTheDocument();
+
+  // Click on the DatePicker to show the year range
+  fireEvent.click(datePicker);
+  const currentYear = new Date().getFullYear();
+  const endYearValue = currentYear + 5;
+
+  const startYear = await screen.findByText(currentYear.toString());
+  const endYear = await screen.findByText(endYearValue.toString());
+  expect(startYear).toBeInTheDocument();
+  expect(endYear).toBeInTheDocument();
     });
   
     it('updates the year when a new year is selected', async () => {
       render(<YearlyCalendar />);
       const calendarIcon = screen.getByRole('button', { name: /Select Year/i });
       fireEvent.click(calendarIcon);
-  
-      // Select a year in the picker
-      const yearOption = screen.getByText('2024'); // Adjust to match your year picker options
-      fireEvent.click(yearOption);
-  
+
+      const datePicker = screen.getByRole('textbox'); 
+      expect(datePicker).toBeInTheDocument();
+   
+      fireEvent.click(datePicker);
+
+      const currentYear = new Date().getFullYear();
+  const chosenYearValue = currentYear + 2;
+
+      const yearOptionsContainer = document.body;
+      const yearButton = within(yearOptionsContainer).getByText(chosenYearValue.toString());
+      fireEvent.click(yearButton);
+    
+
       await waitFor(() => {
-        expect(screen.getByText('Year 2024')).toBeInTheDocument();
+        expect(screen.getByText(`Year ${chosenYearValue}`)).toBeInTheDocument();
       });
-    });*/
+    });
   });
