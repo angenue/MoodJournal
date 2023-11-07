@@ -1,10 +1,7 @@
-import React from "react";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
-import HomePage from "./HomePage";
-import JournalEntryPopup, { JournalEntryPopupProps } from "./JournalEntryPopup";
+import JournalEntryPopup from "./JournalEntryPopup";
 import * as JournalsApi from "../utils/journal_api";
 import { Journal } from "../models/journal";
-import MonthlyCalendar from "./calendar/MonthlyCalendar";
 
 // Mock the entire JournalsApi module
 jest.mock('../utils/journal_api');
@@ -13,7 +10,6 @@ jest.mock('../utils/journal_api');
 const createJournal = JournalsApi.createJournal as jest.Mock;
 const updateJournal = JournalsApi.updateJournal as jest.Mock;
 const deleteJournal = JournalsApi.deleteJournal as jest.Mock;
-const fetchJournals = JournalsApi.fetchJournals as jest.Mock;
 const getLoggedInUser = JournalsApi.getLoggedInUser as jest.Mock;
 
 // Mock global alert

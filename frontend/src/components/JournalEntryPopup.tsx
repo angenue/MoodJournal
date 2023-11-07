@@ -136,7 +136,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
         />
 
         <div className={popupStyles["options"]}>
-        <button className={popupStyles["back-arrow"]} onClick={handleCancel}>
+        <button className={popupStyles["back-arrow"]} onClick={handleCancel} aria-label="Go Back">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
