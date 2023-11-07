@@ -95,12 +95,16 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
       if (journalToEdit) {
         await JournalsApi.deleteJournal(journalToEdit._id);
         onDelete(journalToEdit);
+        setIsDeleteModalOpen(false);
       } else {
         errorMessage("Unable to delete diary: Journal does not exist");
       }
     } catch (error) {
       console.error(error);
       alert(error);
+    }
+    finally {
+      setIsDeleteModalOpen(false); // Ensure the modal is closed after the operation
     }
   
   };
@@ -151,7 +155,7 @@ const JournalEntryPopup: React.FC<JournalEntryPopupProps> = ({
         </button>
 
         {journalToEdit && (
-          <button className={popupStyles["delete-button"]} onClick={handleDelete} >
+          <button className={popupStyles["delete-button"]} onClick={handleDelete} aria-label="Delete journal">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               x="0px"

@@ -239,8 +239,29 @@ describe("Journal Entry Popup CRUD", () => {
 
   })
 
-  it('deletes a journal using the delete button', () => {
+  it('deletes a journal using the delete button', async() => {
     const mockJournal = createMockJournal();
     renderJournalEntryPopup(mockJournal);
+
+    // Mock the deleteJournal function
+    deleteJournal.mockResolvedValue({});
+
+  // Find and click the delete button
+  const deleteButton = screen.getByRole('button', { name: /delete journal/i });
+  fireEvent.click(deleteButton);
+
+  // Wait for the confirmation modal to appear and confirm deletion
+  const confirmDeleteButton = await screen.findByRole('button', { name: /yes, delete/i });
+  fireEvent.click(confirmDeleteButton);
+
+  // Wait for the deleteJournal to be called
+  await waitFor(() => expect(deleteJournal).toHaveBeenCalledWith(mockJournal._id));
+
+  await waitFor(() => expect(mockOnDelete).toHaveBeenCalledWith(mockJournal));
+
+
+  await waitFor(() => {
+    expect(screen.queryByText('Confirm Delete')).not.toBeInTheDocument();
+  });
   })
 });
