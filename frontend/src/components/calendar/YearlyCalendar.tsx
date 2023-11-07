@@ -15,31 +15,25 @@ const YearlyCalendar: React.FC = () => {
   const fetchMoodDataForYear = async (year: number): Promise<Map<string, string>> => {
     try {
       const moodData = new Map();
-  
-      try {
-        const response = await JournalsApi.fetchJournalsByYear(year);
-        const journals = response; // Change this line
-  
-        journals.forEach((journal) => {
+    
+      const response = await JournalsApi.fetchJournalsByYear(year);
+      // Check if the response has data and it's an array before iterating
+      if (response && Array.isArray(response)) {
+        response.forEach((journal) => {
           const journalDate = new Date(journal.date);
           const formattedDate = journalDate.toISOString().split('T')[0];
           moodData.set(formattedDate, journal.mood);
         });
-      } catch (error) {
-        console.error(`Error fetching data for year ${year}:`, error);
       }
-  
+    
       return moodData;
     } catch (error) {
-      console.error(error);
-      alert(error);
-  
-      // Return an empty map or throw an error, depending on what you want to do
+      console.error(`Error fetching data for year ${year}:`, error);
       return new Map<string, string>();
-      // or
-      // throw new Error("Failed to fetch mood data");
+
     }
   };
+  
 
   const updateMoodData = async (year: number) => {
     try {
@@ -84,7 +78,7 @@ const YearlyCalendar: React.FC = () => {
           className={styles.yearTitle}
         >{`Year ${selectedDate.getFullYear()}`}</h1>
 
-        <div className={styles.calendarIcon} onClick={toggleYearPicker}>
+        <div className={styles.calendarIcon} onClick={toggleYearPicker} aria-label="Select Year">
           <i className="fa fa-calendar" aria-hidden="true"></i>
         </div>
 
