@@ -45,6 +45,7 @@ describe('MonthlyCalendar', () => {
     );
 
     // Check if the calendar is showing October 2023
+    // eslint-disable-next-line testing-library/prefer-screen-queries
     expect(getByText('October 2023')).toBeInTheDocument();
   });
 
