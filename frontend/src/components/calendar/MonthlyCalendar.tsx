@@ -14,26 +14,31 @@ interface MonthlyCalendarProps {
   moodData: Map<string, string>;
   updateMoodData: (year: number) => Promise<void>;
 }
-const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, moodData, updateMoodData }) => {
+const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({
+  year,
+  month,
+  moodData,
+  updateMoodData,
+}) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    new Date(year, month, 1)  // Initialize with the first day of the specified month and year
-);
+    new Date(year, month, 1) 
+  );
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(null);
+  const [selectedJournal, setSelectedJournal] = useState<JournalModel | null>(
+    null
+  );
 
   useEffect(() => {
-    const currentDate = selectedDate || new Date(); // Use selectedDate if it exists, otherwise use the current date
+    const currentDate = selectedDate || new Date(); 
     const currentDateYear = currentDate.getFullYear();
     const currentDateMonth = currentDate.getMonth();
-  
+
     if (currentDateYear !== year || currentDateMonth !== month) {
       setSelectedDate(new Date(year, month, 1));
     }
 
     console.log(selectedDate);
   }, [year, month, selectedDate]);
-  
-  
 
   const handleDateClick = async (date: Date) => {
     setSelectedDate(date);
@@ -49,9 +54,9 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, moodData
         );
       });
 
-      setSelectedJournal(filteredJournals[0]|| null); // Set selected journal or null if none found
+      setSelectedJournal(filteredJournals[0] || null); // Set selected journal or null if none found
       setIsPopupOpen(true); // Open the popup regardless of whether a journal was found
-      console.log("selected date", selectedDate)
+      console.log("selected date", selectedDate);
     } catch (error) {
       console.error(error);
       alert(error);
@@ -59,7 +64,6 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, moodData
   };
 
   const handlePopupSave = async (journal: JournalModel) => {
-    // Handle saving the journal entry to the database with the selected date, mood, and journal entry
     console.log(journal);
     setIsPopupOpen(false);
     await updateMoodData(year);
@@ -76,41 +80,39 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({ year, month, moodData
       alert(error);
     }
   };
-  
-  
+
   const closePopup = () => {
     //setSelectedDate(null);
     setIsPopupOpen(false);
   };
 
   function tileClassName({ date }: { date: any }) {
-    const formattedDate = date.toISOString().split('T')[0];
-    const moodForDate = moodData.get(formattedDate) || '';
+    const formattedDate = date.toISOString().split("T")[0];
+    const moodForDate = moodData.get(formattedDate) || "";
     const moodClassName = `react-calendar__tile--mood-${moodForDate.toLowerCase()}`;
 
     return moodClassName;
   }
-  
 
   return (
     <div className="monthly-calendar">
-      <ToastContainer/>
-<Calendar
-  value={selectedDate}
-  activeStartDate={new Date(year, month, 1)}
-  view="month"
-  tileClassName={(tileClassName)}
-  formatShortWeekday={(locale, date) =>
-    new Intl.DateTimeFormat(locale, { weekday: "short" })
-      .format(date)
-      .charAt(0)
-  }
-  onClickDay={handleDateClick}
-  tileDisabled={({ date }) => {
-    // Disable tiles for days in other months
-    return date.getMonth() !== month;
-  }}
-/>
+      <ToastContainer />
+      <Calendar
+        value={selectedDate}
+        activeStartDate={new Date(year, month, 1)}
+        view="month"
+        tileClassName={tileClassName}
+        formatShortWeekday={(locale, date) =>
+          new Intl.DateTimeFormat(locale, { weekday: "short" })
+            .format(date)
+            .charAt(0)
+        }
+        onClickDay={handleDateClick}
+        tileDisabled={({ date }) => {
+          // Disable tiles for days in other months
+          return date.getMonth() !== month;
+        }}
+      />
 
       {isPopupOpen && (
         <JournalEntryPopup

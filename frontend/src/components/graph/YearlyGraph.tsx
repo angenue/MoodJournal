@@ -1,38 +1,36 @@
 // YearlyGraph.tsx
 
-import React, { useState, useEffect } from 'react';
-import styles from '../../styles/graph.module.css';
+import React, { useState, useEffect } from "react";
+import styles from "../../styles/graph.module.css";
 import * as JournalsApi from "../../utils/journal_api";
-import { Chart, registerables } from 'chart.js';
-import { Line, Bar, Scatter } from 'react-chartjs-2';
-import { ChartOptions } from 'chart.js';
-import ScatterPlot from './ScatterPlotGraph';
-import BarChart from './BarChart';
+import { Chart, registerables } from "chart.js";
+import ScatterPlot from "./ScatterPlotGraph";
+import BarChart from "./BarChart";
 Chart.register(...registerables);
-
-
 
 interface YearlyGraphProps {
   year: number;
 }
 
 const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
-    const [moodData, setMoodData] = useState<{ date: string; mood: string }[]>([]);
+  const [moodData, setMoodData] = useState<{ date: string; mood: string }[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchMoodDataForYear = async (year: number) => {
       try {
         const response = await JournalsApi.fetchJournalsByYear(year);
-        const journals = response; // Change this line
+        const journals = response; 
 
         const formattedData = journals.map((journal) => {
           return {
-            date: new Date(journal.date).toISOString().split('T')[0],
-            mood: journal.mood
+            date: new Date(journal.date).toISOString().split("T")[0],
+            mood: journal.mood,
           };
         });
 
-        formattedData.sort((a, b) => a.date.localeCompare(b.date)); // Sort by date
+        formattedData.sort((a, b) => a.date.localeCompare(b.date)); 
 
         setMoodData(formattedData);
       } catch (error) {
@@ -43,12 +41,12 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
 
     fetchMoodDataForYear(year);
   }, [year]);
-  
-    return (
-      <div>
-        <h1 className={styles.yearTitle}>{`Yearly Mood Data for ${year}`}</h1>
-        <div className={styles.container}>
-            <div className={`${styles["graphContainer"]}`}>
+
+  return (
+    <div>
+      <h1 className={styles.yearTitle}>{`Yearly Mood Data for ${year}`}</h1>
+      <div className={styles.container}>
+        <div className={`${styles["graphContainer"]}`}>
           <ScatterPlot
             moodData={moodData}
             labels={["angry", "sad", "neutral", "content", "happy"]}
@@ -57,14 +55,14 @@ const YearlyGraph: React.FC<YearlyGraphProps> = ({ year }) => {
               new Set(moodData.map((entry) => entry.date))
             )}
           />
-          </div>
+        </div>
 
-<div className={`${styles["graphContainer"]}`}>
+        <div className={`${styles["graphContainer"]}`}>
           <BarChart moodData={moodData} />
-          </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default YearlyGraph;

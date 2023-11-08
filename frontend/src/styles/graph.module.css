@@ -9,8 +9,8 @@
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically */
+    justify-content: center; 
+    align-items: center; 
     text-align: center;
     padding: 10px;
     gap: 55px;
@@ -19,7 +19,7 @@
   .labelContainer {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px; /* Add margin if needed */
+    margin-bottom: 10px;
   }
 
   .yearTitle{

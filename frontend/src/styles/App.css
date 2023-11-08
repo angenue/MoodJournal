@@ -2,8 +2,6 @@
   .content {
     flex-grow: 1;
     overflow: hidden;
-    /* This makes the content area fill the available space */
-    /* Add other styles as needed */
   }
 
   .top-nav {

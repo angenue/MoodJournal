@@ -1,20 +1,19 @@
 .container {
   position: sticky;
-  top: 0; /* Stick to the top */
-  background-color: #FFFFFF;
+  top: 0;
+  background-color: #ffffff;
   height: 60px;
-  align-items: center; /* Center vertically */
+  align-items: center;
   display: flex;
 }
 
 .title {
   color: #5e747f;
   font-size: 30px;
-  text-align: center; /* Center the text horizontally */
+  text-align: center;
   font-weight: bold;
   margin-left: 30px;
   padding-top: 5px;
- 
 }
 
 .user {
@@ -30,15 +29,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 30px; /* Adjust margin as needed */
+  margin-right: 30px;
   position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translate(0, -50%);
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
 }
 
 .personIcon {
-  color: #888; /* Gray color */
+  color: #888;
 }
-
-

@@ -13,7 +13,7 @@ import { successMessage } from "./utils/toastMessage";
 
 interface AuthenticatedAppProps {
   onLogout: () => void;
-  loggedInUser: User | null; // Assuming onLogin is a function that doesn't return anything
+  loggedInUser: User | null;
 }
 
 const AuthenticatedApp = ({ onLogout, loggedInUser }: AuthenticatedAppProps) => {

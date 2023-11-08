@@ -1,54 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import styles from '../../styles/graph.module.css';
-import { Bar } from 'react-chartjs-2';
+import React, { useState, useEffect } from "react";
+import styles from "../../styles/graph.module.css";
+import { Bar } from "react-chartjs-2";
 
 interface MoodData {
-    date: string;
-    mood: string;
-  }
-  
-  interface BarChartProps {
-    moodData: MoodData[];
-  }
-  
-  const BarChart: React.FC<BarChartProps> = ({ moodData }) => {
-    const moodLabels = ['angry', 'sad', 'neutral', 'content', 'happy']; // Define moodLabels here
+  date: string;
+  mood: string;
+}
 
-const moodCounts: { [key: string]: number } = {};
-moodLabels.forEach(mood => {
-  moodCounts[mood] = 0;
-});
+interface BarChartProps {
+  moodData: MoodData[];
+}
 
-moodData.forEach(entry => {
-  if (moodCounts[entry.mood]) {
-    moodCounts[entry.mood]++;
-  } else {
-    moodCounts[entry.mood] = 1;
-  }
-});
+const BarChart: React.FC<BarChartProps> = ({ moodData }) => {
+  const moodLabels = ["angry", "sad", "neutral", "content", "happy"];
+  const moodCounts: { [key: string]: number } = {};
+  moodLabels.forEach((mood) => {
+    moodCounts[mood] = 0;
+  });
 
-// Step 2: Create Labels and Data Arrays
-const moodDataCounts = moodLabels.map(mood => moodCounts[mood]);
+  moodData.forEach((entry) => {
+    if (moodCounts[entry.mood]) {
+      moodCounts[entry.mood]++;
+    } else {
+      moodCounts[entry.mood] = 1;
+    }
+  });
 
-// Step 3: Define Data for Bar Chart
-const data = {
-  labels: moodLabels,
-  datasets: [
-    {
-      label: 'Mood Counts',
-      data: moodDataCounts,
-      backgroundColor: [
-        '#E76F51', '#577590', '#E9C46A', '#F4A261', '#43aa8b'
-      ], // Assign colors as you wish 
-    },
-  ],
-};
+  const moodDataCounts = moodLabels.map((mood) => moodCounts[mood]);
 
-const options = {
+  const data = {
+    labels: moodLabels,
+    datasets: [
+      {
+        label: "Mood Counts",
+        data: moodDataCounts,
+        backgroundColor: [
+          "#E76F51",
+          "#577590",
+          "#E9C46A",
+          "#F4A261",
+          "#43aa8b",
+        ],
+      },
+    ],
+  };
+
+  const options = {
     scales: {
       y: {
         beginAtZero: true,
-        max: Math.max(...moodDataCounts) + 1, // Adjust the max value based on the data
+        max: Math.max(...moodDataCounts) + 1,
       },
     },
     plugins: {
