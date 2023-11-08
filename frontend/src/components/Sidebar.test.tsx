@@ -26,10 +26,9 @@ describe('Sidebar Component', () => {
     const onLogoutSuccessfulMock = jest.fn();
   
     beforeEach(() => {
-      // Reset the mocks before each test
       mockedNavigate.mockReset();
       onLogoutSuccessfulMock.mockReset();
-     logout.mockResolvedValue({}); // Ensure this resolves
+     logout.mockResolvedValue({}); 
     });
   
     it('navigates to "/" when the logout button is clicked', async () => {

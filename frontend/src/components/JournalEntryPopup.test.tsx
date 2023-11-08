@@ -3,16 +3,16 @@ import JournalEntryPopup from "./JournalEntryPopup";
 import * as JournalsApi from "../utils/journal_api";
 import { Journal } from "../models/journal";
 
-// Mock the entire JournalsApi module
+
 jest.mock('../utils/journal_api');
 
-// Define the mock functions
+
 const createJournal = JournalsApi.createJournal as jest.Mock;
 const updateJournal = JournalsApi.updateJournal as jest.Mock;
 const deleteJournal = JournalsApi.deleteJournal as jest.Mock;
 const getLoggedInUser = JournalsApi.getLoggedInUser as jest.Mock;
 
-// Mock global alert
+
 global.alert = jest.fn();
 
 const mockOnSave = jest.fn();
@@ -21,7 +21,7 @@ const mockOnDelete = jest.fn();
 
 const selectedDate = new Date(2023, 9, 3);
 
-// Create a helper function to render the component with default props
+
 const renderJournalEntryPopup = (journalToEdit: Journal | undefined) => {
     render(
       <JournalEntryPopup
@@ -35,7 +35,7 @@ const renderJournalEntryPopup = (journalToEdit: Journal | undefined) => {
   };
 
   const createMockJournal = (overrides = {}) => {
-    // Set default properties for the mock journal
+ 
     const defaultJournal = {
       _id: "6545b9c4afbb87deccba9063",
       mood: "happy",
@@ -43,7 +43,7 @@ const renderJournalEntryPopup = (journalToEdit: Journal | undefined) => {
       date: selectedDate,
     };
   
-    // Override the default properties with any properties passed to the function
+
     return { ...defaultJournal, ...overrides };
   };
 
@@ -53,7 +53,7 @@ describe("Journal Entry Popup", () => {
   const onDelete = jest.fn();
 
   beforeEach(() => {
-    // Mock the getLoggedInUser to return a user object
+
     getLoggedInUser.mockResolvedValue({
       id: "507f1f77bcf86cd799439011",
       email: "testuser@example.com",
@@ -85,9 +85,9 @@ describe("Journal Entry Popup", () => {
 
     renderJournalEntryPopup(mockJournal);
 
-    // Wait for the JournalEntryPopup to be displayed
+
     await waitFor(() => {
-      // Assert that the popup is displayed with the correct data
+
       expect(screen.getByText("Tue Oct 03 2023")).toBeInTheDocument();
     });
 
@@ -157,7 +157,7 @@ expect(selectedMoodButton).toHaveClass('active');
 
 
 describe("Journal Entry Popup CRUD", () => {
-    const selectedDate = new Date(2023, 9, 3); // Note: months are 0-indexed in JavaScript Dates
+    const selectedDate = new Date(2023, 9, 3); 
   const onSave = jest.fn();
   const onCancel = jest.fn();
   const onDelete = jest.fn();

@@ -8,13 +8,11 @@ const createJournal = JournalsApi.createJournal as jest.Mock;
 const getLoggedInUser = JournalsApi.getLoggedInUser as jest.Mock;
 global.alert = jest.fn();
 
-// Mock the API module
 jest.mock('../utils/journal_api', () => ({
   createJournal: jest.fn(),
   getLoggedInUser: jest.fn(),
 }));
 
-// Mock the ToastContainer to avoid rendering it during tests
 jest.mock('react-toastify', () => {
   const originalModule = jest.requireActual('react-toastify');
   return {
@@ -44,7 +42,6 @@ describe('HomePage', () => {
     getLoggedInUser.mockResolvedValue({
       id: '507f1f77bcf86cd799439011',
       email: 'testuser@example.com',
-      // ... other user properties
     });
   });
 
