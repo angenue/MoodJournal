@@ -27,6 +27,10 @@ const renderWithRouter = (ui: JSX.Element, { route = '/' } = {}) => {
 };
 
 describe('App', () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it('renders UnauthenticatedApp when there is no logged in user', async () => {
     // Mock the getLoggedInUser to return null
     getLoggedInUser.mockResolvedValue(null);

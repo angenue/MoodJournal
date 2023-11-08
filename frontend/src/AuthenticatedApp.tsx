@@ -4,12 +4,10 @@ import TopNav from './components/TopNav';
 import HomePage from './components/HomePage';
 import YearlyCalendar from './components/calendar/YearlyCalendar';
 import MoodDataPage from "./components/graph/MoodDataPage";
-import { BrowserRouter as Router, Route, Routes,useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import { User } from './models/user';
-import * as JournalsApi from "./utils/journal_api";
 import 'react-toastify/dist/ReactToastify.css';
-import { successMessage } from "./utils/toastMessage";
 
 interface AuthenticatedAppProps {
   onLogout: () => void;
