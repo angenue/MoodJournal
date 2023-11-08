@@ -30,8 +30,14 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
             onLoginSuccessful(user);
             //navigate('/Home');
         } catch (error) {
-            alert(error);
-            console.error(error);
+          // Check if the error is an instance of Error
+          if (error instanceof Error) {
+            alert(error.message); // Now TypeScript knows error is an Error object
+          } else {
+            // Handle cases where it's not an Error object
+            console.error('Caught error of unknown type:', error);
+            alert('An unknown error occurred');
+          }
         }
     }
 
