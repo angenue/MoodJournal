@@ -44,3 +44,8 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+*****************************************************************************************************************************************
+
+to view jenkins CI first get a link from ngrok by typing ngrok http 8081 then putting that link in github webhook. Open jenkins in localhost 8081 and run a build
