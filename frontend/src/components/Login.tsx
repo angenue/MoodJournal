@@ -53,7 +53,7 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
      <div className={styles.container}>
       <h1 className={styles.title}>MOODY</h1>
       <div className={styles.formContainer + " p-5 border rounded shadow-sm"} style={{ backgroundColor: '#f2f1e8', maxWidth: '500px', margin: '0 auto' }}>
-        <h5 className="mb-3 text-center" style={{ color: '#7b9e87', fontSize: '2rem' }}>Login</h5>
+        <h5 className="mb-3 text-center" style={{ color: '#7b9e87', fontSize: '2rem' }}>Sign In</h5>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">

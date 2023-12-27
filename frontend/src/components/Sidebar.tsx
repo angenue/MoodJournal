@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react"
 import styles from "../styles/Sidebar.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import * as JournalsApi from "../utils/journal_api";
-import { User } from "../models/user";
 import 'react-toastify/dist/ReactToastify.css';
-import { errorMessage, successMessage } from "../utils/toastMessage";
+import { errorMessage } from "../utils/toastMessage";
 
 interface SidebarProps {
   onLogoutSuccessful: () => void,

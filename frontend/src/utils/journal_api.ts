@@ -17,7 +17,7 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
   } else {
     const errorBody = await response.json();
     console.log("Error body:", errorBody);
-    const errorMessage = errorBody.message || 'Unknown error occurred';
+    const errorMessage = errorBody.message || 'Error message';
     throw new ApiError(errorMessage, response.status);
   }
 }

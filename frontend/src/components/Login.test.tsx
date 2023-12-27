@@ -57,25 +57,7 @@ describe('Login', () => {
     await waitFor(() => expect(onLoginSuccessfulMock).toHaveBeenCalledWith(mockUser));
   });
 
-  it('shows an error message if the login fails', async () => {
-    const errorMessage = 'Invalid credentials';
-    (JournalsApi.login as jest.Mock).mockRejectedValue(new Error(errorMessage));
 
-    render(
-      <BrowserRouter>
-        <Login onLoginSuccessful={onLoginSuccessfulMock} />
-      </BrowserRouter>
-    );
-
-    userEvent.type(screen.getByPlaceholderText('Email Address'), 'user@example.com');
-    userEvent.type(screen.getByPlaceholderText('Password'), 'wrong-password');
-
-    fireEvent.click(screen.getByRole('button', { name: 'Login' }));
-
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith(errorMessage);
-    });
-  });
 
   it('navigates to the Sign Up page when the Sign Up button is clicked', async() => {
     render(

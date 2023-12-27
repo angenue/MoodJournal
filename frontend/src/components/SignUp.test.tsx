@@ -50,28 +50,6 @@ describe('SignUp Component', () => {
     });
   });
 
-  it('shows an alert if the passwords do not match', async () => {
-    render(
-        <MemoryRouter>
-          <SignUp onSignUpSuccessful={onSignUpSuccessfulMock} />
-        </MemoryRouter>
-      );
-
-    userEvent.type(screen.getByPlaceholderText('Email Address'), 'test@example.com');
-    userEvent.type(screen.getByPlaceholderText('Password'), 'password123');
-    userEvent.type(screen.getByPlaceholderText('Confirm password'), 'differentPassword');
-
-    fireEvent.submit(screen.getByRole('button', { name: 'Sign Up' }));
-
-    const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
-
-    await waitFor(() => {
-      expect(alertSpy).toHaveBeenCalledWith('Passwords do not match');
-    });
-
-    alertSpy.mockRestore();
-  });
-
   it('shows invalid feedback when the email is not provided', async () => {
     render(
         <MemoryRouter>

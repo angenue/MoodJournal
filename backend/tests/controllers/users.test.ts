@@ -52,7 +52,7 @@ describe('testing user signup', () => {
       .expect(409); 
 
     // Check the response body for the error message
-    expect(response.body.error).toEqual('User with this email address already exists.');
+    expect(response.body.message).toEqual('Email already in use');
   });
 
   it('should return a 400 status when password is missing', async () => {

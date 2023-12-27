@@ -15,6 +15,10 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
+export const mongoStore = MongoStore.create({
+  mongoUrl: env.MONGO_CONNECTION_STRING,
+});
+
 app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
@@ -23,9 +27,7 @@ app.use(session({
     maxAge:60 * 60 * 1000,
   },
   rolling: true,
-  store: MongoStore.create({
-    mongoUrl: env.MONGO_CONNECTION_STRING
-  }),
+  store: mongoStore,
 }));
 
 app.use("/api/users", userRoutes);
