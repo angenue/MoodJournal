@@ -30,7 +30,7 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
         const existingEmail = await UserModel.findOne({ email: email}).exec();
 
         if (existingEmail) {
-            throw createHttpError(409, "User with this email address already exists.");
+            return res.status(409).json({ message: "User with this email address already exists" });
         }
 
         const passwordHashed = await bcrypt.hash(passwordRaw, 10);

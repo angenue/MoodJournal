@@ -40,6 +40,8 @@ export const getJournal: RequestHandler = async (req, res, next) => {
           throw createHttpError(401, "You cannt access this journal");
         }
 
+        
+
         res.status(200).json(journal);
       
       } catch(error) {

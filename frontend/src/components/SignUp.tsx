@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import styles from "../styles/SignUpLoginForm.module.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { errorMessage, successMessage } from "../utils/toastMessage";
+import { ApiError } from "../utils/journal_api";
 
 interface SignUpProps {
   //onSignUpClicked: () => void,
@@ -14,25 +15,35 @@ interface SignUpProps {
 }
 
 const SignUp = ({  onSignUpSuccessful }: SignUpProps) => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<SignUpCredentials>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch
+} = useForm<SignUpCredentials>();
+
+const password = watch("password");
+const confirmPassword = watch("confirmPassword");
+
+    const [emailTakenError, setEmailTakenError] = useState("");
 
 
     async function onSubmit(credentials: SignUpCredentials) {
-        if (credentials.password !== credentials.confirmPassword) {
-            alert("Passwords do not match");
-            return;
+      // Clear any existing errors
+      setEmailTakenError("");
+      try {
+        const newUser = await JournalsApi.signUp(credentials);
+        onSignUpSuccessful(newUser);
+      } catch (error) {
+        console.error("Error in submission:", error);
+        if (error instanceof ApiError) {
+          setEmailTakenError(error.message); //email already taken
+          //alert(error.message);
+        } else {
+          alert("An unknown error occurred.");
+          console.error(error);
         }
-        try {
-            const newUser = await JournalsApi.signUp(credentials);
-            onSignUpSuccessful(newUser);
-        } catch (error) {
-            alert(error);
-            console.error(error);
-        }
+      }
     }
 
     return (
@@ -55,6 +66,7 @@ const SignUp = ({  onSignUpSuccessful }: SignUpProps) => {
               {...register('email', { required: true })}
             />
             {errors.email && <div className="invalid-feedback">Email is required</div>}
+            {emailTakenError && <div className="text-danger">{emailTakenError}</div>}
           </div>
 
           {/* Password Input */}
@@ -67,9 +79,19 @@ const SignUp = ({  onSignUpSuccessful }: SignUpProps) => {
               placeholder="Password"
               className={`form-control form-control-lg ${errors.password ? 'is-invalid' : ''}`}
               id="password"
-              {...register('password', { required: true })}
+              {...register('password', { 
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long"
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Password must not exceed 20 characters"
+                }
+              })}
             />
-            {errors.password && <div className="invalid-feedback">Password is required</div>}
+            {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
             <small id="passwordHelpBlock" className="form-text text-muted">
               Your password must be 8-20 characters long.
             </small>
@@ -87,11 +109,12 @@ const SignUp = ({  onSignUpSuccessful }: SignUpProps) => {
                 errors.confirmPassword ? 'is-invalid' : ''
               }`}
               id="confirmPassword"
-              {...register('confirmPassword', { required: true })}
+              {...register('confirmPassword', {
+                required: "Confirmation password is required",
+                validate: value => value === password || "Passwords do not match"
+              })}
             />
-            {errors.confirmPassword && (
-              <div className="invalid-feedback">Confirmation password is required</div>
-            )}
+            {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
             <small id="passwordHelpBlock" className="form-text text-muted">
               Your password must be 8-20 characters long.
             </small>

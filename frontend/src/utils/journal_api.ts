@@ -1,16 +1,28 @@
 import { Journal } from "../models/journal";
 import { User } from "../models/user";
 
+export class ApiError extends Error {
+  constructor(public message: string, public status: number) {
+    super(message);
+    Object.setPrototypeOf(this, ApiError.prototype);
+  }
+}
+
+
+
 async function fetchData(input: RequestInfo, init?: RequestInit) {
   const response = await fetch(input, init);
   if (response.ok) {
     return response;
   } else {
     const errorBody = await response.json();
-    const errorMessage = errorBody.error;
-    throw Error(errorMessage);
+    console.log("Error body:", errorBody);
+    const errorMessage = errorBody.message || 'Unknown error occurred';
+    throw new ApiError(errorMessage, response.status);
   }
 }
+
+
 
 export async function getLoggedInUser(): Promise<User> {
   const response = await fetchData("/api/users", { method: "GET" });
