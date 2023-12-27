@@ -78,34 +78,43 @@ export const getJournal: RequestHandler = async (req, res, next) => {
         }
       };
 
-      export const getJournalsByYearAndMonth: RequestHandler<{ year: number, month: number }> = async (req, res, next) => {
-        const year = req.params.year;
-        const month = req.params.month;
+      export const getJournalsByYearAndMonth: RequestHandler<{ year: string, month: string }> = async (req, res, next) => {
+        const year = parseInt(req.params.year, 10);
+        const month = parseInt(req.params.month, 10); // Assuming month is 1 for January, 2 for February, etc.
         const authenticatedUserId = req.session.userId;
-      
+    
         try {
-          assertIsDefined(authenticatedUserId);
-          const journals = await JournalModel.find({
-            userId: authenticatedUserId,
-            date: {
-              $gte: new Date(`${year}-${month}-01`),
-              $lt: new Date(`${year}-${Number(month) + 1}-01`)
+            assertIsDefined(authenticatedUserId);
+    
+            const startDate = new Date(year, month - 1, 1);
+            let endDate;
+            if (month === 12) {
+                endDate = new Date(year + 1, 0, 1);
+            } else {
+                endDate = new Date(year, month, 1);
             }
-          }).exec();
-
-          for (const journal of journals) {
-            if (!journal.userId.equals(authenticatedUserId)) {
-              throw createHttpError(401, "You cannot access this journal");
+    
+            const journals = await JournalModel.find({
+                userId: authenticatedUserId,
+                date: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+            }).exec();
+    
+            for (const journal of journals) {
+                if (!journal.userId.equals(authenticatedUserId)) {
+                    throw createHttpError(401, "You cannot access this journal");
+                }
             }
-          }
-      
-          res.status(200).json(journals);
+    
+            res.status(200).json(journals);
         } catch (error) {
-          next(error);
+            next(error);
         }
-      };
-      
-
+    };
+    
+  
 
       interface CreateJournalBody {
         mood?: string,
