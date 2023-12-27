@@ -6,8 +6,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/SignUpLoginForm.module.css"
 import 'react-toastify/dist/ReactToastify.css';
-import { errorMessage, successMessage } from "../utils/toastMessage";
 import { ApiError } from "../utils/journal_api";
+import ImageGallery from './ImageGallery'; 
 
 interface SignUpProps {
   //onSignUpClicked: () => void,
@@ -136,6 +136,7 @@ const confirmPassword = watch("confirmPassword");
           </div>
         </form>
       </div>
+      <ImageGallery />
       
     </div>
        

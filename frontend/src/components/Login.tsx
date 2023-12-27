@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import React, { useState, useEffect } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom";
 import { User } from '../models/user';
 import styles from "../styles/SignUpLoginForm.module.css";
@@ -7,8 +7,8 @@ import * as JournalsApi from "../utils/journal_api";
 import { LoginCredentials } from '../utils/journal_api';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import { errorMessage, successMessage } from "../utils/toastMessage";
 import { ApiError } from "../utils/journal_api";
+import ImageGallery from './ImageGallery'; 
 
 interface LoginProps {
     
@@ -102,6 +102,7 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
           </div>
         </form>
       </div>
+      <ImageGallery />
     </div>
   );
 };
