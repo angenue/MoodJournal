@@ -4,6 +4,7 @@ import styles from "../../styles/CalendarPage.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as JournalsApi from "../../utils/journal_api";
+import Footer from "../Footer";
 
 const YearlyCalendar: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -107,7 +108,9 @@ const YearlyCalendar: React.FC = () => {
             updateMoodData={updateMoodData}
           />
         ))}
+        
       </div>
+      <Footer/>
     </div>
   );
 };

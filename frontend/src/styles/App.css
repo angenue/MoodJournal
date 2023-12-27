@@ -1,10 +1,8 @@
-
-  .content {
-    flex-grow: 1;
-    overflow: hidden;
-  }
-
-  .top-nav {
-    z-index: 1000;
-  }
+.main-container {
+  display: flex;
   
+  
+}
+  .content {
+    flex: 1;
+  }

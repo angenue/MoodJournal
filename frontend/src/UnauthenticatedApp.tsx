@@ -12,6 +12,7 @@ import * as JournalsApi from "./utils/journal_api";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import { User } from "./models/user";
+import Footer from "./components/Footer";
 
 interface UnauthenticatedAppProps {
   onLogin: (user: User) => void;
@@ -23,6 +24,7 @@ const UnauthenticatedApp = ({
   loggedInUser,
 }: UnauthenticatedAppProps) => {
   return (
+
     <Routes>
       <Route
         path="/"

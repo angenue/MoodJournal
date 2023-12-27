@@ -7,6 +7,7 @@ import { User } from "./models/user";
 import * as JournalsApi from "./utils/journal_api";
 import { Navigate, Route, BrowserRouter as Router, Routes, useNavigate} from "react-router-dom";
 import ReactModal from "react-modal";
+import Footer from "./components/Footer";
 
 const App = () => {
   

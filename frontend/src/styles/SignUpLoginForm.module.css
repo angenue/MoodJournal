@@ -1,26 +1,33 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* The 1fr row will take the remaining space */
+  min-height: 100vh;
+  justify-content: center; /* This will center the content horizontally */
+  align-items: start; /* This will align the content to the top */
   background-color: #d2d0ba;
   overflow: auto;
   scroll-behavior: smooth;
+  
 }
+
 
 .title {
   margin-bottom: 2rem;
   color: #5e747f;
   font-size: 5rem;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .form-container {
   padding: 5rem;
+  max-width: 500px; /* Adjust this value to your preference */
+  margin: auto; /* This centers the form container in the grid cell */
   border: 1px solid #000;
   border-radius: 10px;
   background-color: #f2f1e8;
 }
+
 
 .link {
   text-decoration: none;

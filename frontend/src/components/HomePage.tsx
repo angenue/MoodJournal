@@ -8,6 +8,7 @@ import { mapEmojiToString } from '../utils/mapEmojiAndString';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { errorMessage, successMessage } from "../utils/toastMessage";
+import Footer from "./Footer";
 
 
 interface FormData {
@@ -132,6 +133,7 @@ const HomePage = () => {
 
         </div>
       </form>
+      
     </div>
   );
 };

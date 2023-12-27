@@ -6,9 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #efefef;
-  overflow: hidden;
+  overflow: auto;
   background-size: cover;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 code {

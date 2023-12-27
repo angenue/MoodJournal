@@ -5,6 +5,7 @@ import YearlyMoodGraphs from './YearlyGraph';
 import MonthlyMoodGraphs from './MonthlyGraph';
 import styles from '../../styles/graph.module.css';
 import ReactDatePicker from 'react-datepicker';
+import Footer from '../Footer';
 
 const MoodDataPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -24,7 +25,10 @@ const MoodDataPage = () => {
       
       <YearlyMoodGraphs year={selectedDate.getFullYear()} />
         <MonthlyMoodGraphs year={selectedDate.getFullYear()} month={selectedDate.getMonth() + 1} />
+        
+        <Footer/>
       </div>
+      
     </div>
   );
 };

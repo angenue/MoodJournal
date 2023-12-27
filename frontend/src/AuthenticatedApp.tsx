@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import { User } from './models/user';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./components/Footer";
 
 interface AuthenticatedAppProps {
   onLogout: () => void;
@@ -16,11 +17,12 @@ interface AuthenticatedAppProps {
 
 const AuthenticatedApp = ({ onLogout, loggedInUser }: AuthenticatedAppProps) => {
   return (
-    <div style={{ display: 'flex' }}>
+   <div className="main-container">
      
         <Sidebar onLogoutSuccessful={onLogout}/>
         <div className="content">
           <TopNav/>
+          
 
           <Routes>
             <Route path="/Home" element={<HomePage />} />
