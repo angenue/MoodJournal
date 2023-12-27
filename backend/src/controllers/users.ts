@@ -30,7 +30,7 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
         const existingEmail = await UserModel.findOne({ email: email}).exec();
 
         if (existingEmail) {
-            return res.status(409).json({ message: "User with this email address already exists" });
+            return res.status(409).json({ message: "Email already in use" });
         }
 
         const passwordHashed = await bcrypt.hash(passwordRaw, 10);
@@ -65,13 +65,15 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
          const user = await UserModel.findOne({email: email}).select("+password +email").exec();
 
          if (!user) {
-            throw createHttpError(401, "Invalid credentials");
+            //throw createHttpError(401, "Invalid credentials");
+            return res.status(401).json({ message: "Invalid Credentials" });
          }
 
          const passwordMatch = await bcrypt.compare(password, user.password);
 
          if (!passwordMatch) {
-            throw createHttpError(401, "Invalid credentials"); 
+            //throw createHttpError(401, "Invalid credentials"); 
+            return res.status(401).json({ message: "Invalid Credentials" });
          }
 
          req.session.userId = user._id;

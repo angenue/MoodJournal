@@ -61,7 +61,7 @@ const confirmPassword = watch("confirmPassword");
             <input
               type="email"
               placeholder="Email Address"
-              className={`form-control form-control-lg ${errors.email ? 'is-invalid' : ''}`}
+              className={`form-control form-control-lg ${errors.email || emailTakenError ? 'is-invalid' : ''}`}
               id="email"
               {...register('email', { required: true })}
             />

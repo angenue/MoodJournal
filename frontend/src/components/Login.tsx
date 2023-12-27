@@ -8,6 +8,7 @@ import { LoginCredentials } from '../utils/journal_api';
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { errorMessage, successMessage } from "../utils/toastMessage";
+import { ApiError } from "../utils/journal_api";
 
 interface LoginProps {
     
@@ -23,17 +24,22 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
     } = useForm<LoginCredentials>();
     const navigate = useNavigate();
 
+    const [authError, setAuthError] = useState("");
+
+
 
     async function onSubmit(credentials: LoginCredentials) {
+      //setAuthError("");
+
         try {
             const user = await JournalsApi.login(credentials);
             onLoginSuccessful(user);
             //navigate('/Home');
         } catch (error) {
-          // Check if the error is an instance of Error
-          if (error instanceof Error) {
-            alert(error.message); // Now TypeScript knows error is an Error object
-          } else {
+          
+          if (error instanceof ApiError) {
+            setAuthError(error.message); 
+        } else {
             // Handle cases where it's not an Error object
             console.error('Caught error of unknown type:', error);
             alert('An unknown error occurred');
@@ -75,7 +81,10 @@ const Login = ({ onLoginSuccessful}: LoginProps) => {
               {...register('password', { required: true })}
             />
             {errors.password && <div className="invalid-feedback">Password is required</div>}
+            
           </div>
+
+          {authError && <div className="alert alert-danger">{authError}</div>}
 
           <div className="d-flex justify-content-between">
             <button type="button" className={styles.linkBtn}  disabled={isSubmitting}>
